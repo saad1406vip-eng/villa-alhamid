@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="فيلا الحميد">
+<title>فيلا الحميد - نظام إدارة المشاريع المتكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#c8a96e;--sand2:#e8d5b0;--sand3:#9a7a45;--bg:#0f0e0c;--bg2:#181612;--bg3:#22201a;--bg4:#2c2920;--text:#f0e8d8;--text2:#b8a888;--text3:#6a6050;--green:#5a9e6f;--gbg:#182218;--red:#c06060;--rbg:#221818;--yellow:#c8a030;--ybg:#221e10;--blue:#5080a0;--bbg:#101820;--purple:#8b5cf6;--pbg:#2d1b4d;--border:#353025;--r:14px;--tab:60px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif}
+body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;max-width:430px;margin:0 auto}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr-title{font-size:17px;font-weight:900;color:var(--sand)}
+.hdr-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.hdr-badge{background:var(--sand3);color:var(--bg);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.tabs{display:flex;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;height:var(--tab);overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tb{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:transparent;color:var(--text3);font-family:'Cairo',sans-serif;font-size:9px;font-weight:700;cursor:pointer;padding:6px 12px;position:relative;transition:color .2s;white-space:nowrap}
+.tb.on{color:var(--sand)}
+.tb.on::after{content:'';position:absolute;top:0;left:15%;right:15%;height:2px;background:var(--sand);border-radius:0 0 3px 3px}
+.tb-ico{font-size:18px;line-height:1}
+.pg{display:none;padding:14px}
+.pg.on{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.ch{padding:12px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.ch.nb{border-bottom:none;cursor:default}
+.ci{font-size:18px;flex-shrink:0}
+.ct{font-size:13px;font-weight:700;flex:1}
+.cv{color:var(--text3);transition:transform .25s;font-size:11px;flex-shrink:0}
+.card.col .cv{transform:rotate(180deg)}
+.cb{padding:12px 14px}
+.card.col .cb{display:none}
+.ir{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);gap:8px}
+.ir:last-child{border-bottom:none}
+.il{font-size:11px;color:var(--text3);flex-shrink:0;padding-left:8px}
+.iv{font-size:11px;color:var(--text);text-align:left;font-weight:600}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center}
+.sv{font-size:15px;font-weight:900;color:var(--sand);line-height:1.2}
+.sl{font-size:10px;color:var(--text3);margin-top:3px}
+.tot{background:linear-gradient(135deg,var(--sand3),var(--sand));border-radius:var(--r);padding:14px 16px;text-align:center;margin-bottom:12px}
+.tot .tl{font-size:10px;color:rgba(0,0,0,.6);font-weight:600}
+.tot .ta{font-size:22px;font-weight:900;color:var(--bg);line-height:1.1}
+.tot .ts{font-size:10px;color:rgba(0,0,0,.5)}
+.tag{display:inline-flex;align-items:center;gap:3px;border-radius:8px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
+.tg{background:var(--gbg);color:var(--green)}
+.tr{background:var(--rbg);color:var(--red)}
+.ty{background:var(--ybg);color:var(--yellow)}
+.tb2{background:var(--bbg);color:var(--blue)}
+.ts2{background:var(--bg4);color:var(--text2)}
+.tp{background:var(--pbg);color:var(--purple)}
+.er{display:flex;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);gap:8px;cursor:pointer;transition:all .2s}
+.er:hover{background:var(--bg3);border-radius:8px;transform:translateX(-2px)}
+.er:last-child{border-bottom:none}
+.er-info{flex:1;min-width:0}
+.er-name{font-size:12px;color:var(--text);font-weight:600;margin-bottom:2px}
+.er-meta{font-size:10px;color:var(--text3);margin-bottom:3px}
+.er-right{text-align:left;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.er-amt{font-size:13px;font-weight:700;color:var(--sand)}
+.sl2{font-size:10px;font-weight:700;color:var(--sand3);letter-spacing:.8px;padding:10px 0 5px;text-transform:uppercase}
+.note{border-radius:10px;padding:9px 11px;font-size:11px;margin-bottom:9px;line-height:1.7;cursor:pointer}
+.note:hover{background:var(--bg3);transform:translateX(-2px)}
+.ny{background:var(--ybg);border:1px solid var(--yellow);color:var(--yellow)}
+.nr{background:var(--rbg);border:1px solid var(--red);color:var(--red)}
+.ng{background:var(--gbg);border:1px solid var(--green);color:var(--green)}
+.nb2{background:var(--bbg);border:1px solid var(--blue);color:var(--blue)}
+.np{background:var(--pbg);border:1px solid var(--purple);color:var(--purple)}
+.ul{list-style:none}
+.ul li{padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:7px;line-height:1.5;cursor:pointer}
+.ul li:hover{background:var(--bg3);border-radius:8px}
+.ul li:last-child{border-bottom:none}
+.ul li::before{content:'▸';color:var(--sand);flex-shrink:0}
+.add-fab{display:none}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.overlay.h{display:none}
+.sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;padding:20px 18px 34px}
+.sheet::-webkit-scrollbar{display:none}
+.sh-title{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);margin-bottom:10px;direction:rtl}
+.inp:focus{outline:none;border-color:var(--sand)}
+select.inp{-webkit-appearance:none;cursor:pointer}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-p{flex:1;background:var(--sand);color:var(--bg);border:none;border-radius:10px;padding:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.btn-s{background:var(--bg4);color:var(--text2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:'Cairo',sans-serif;font-size:13px;cursor:pointer}
+.ma{display:flex;gap:10px;margin-top:6px}
+.type-sel{display:flex;gap:6px;margin-bottom:10px}
+.type-btn{flex:1;padding:8px 2px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text3);font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
+.type-btn.on{background:var(--sand3);color:var(--bg);border-color:var(--sand3)}
+.lbl{font-size:11px;color:var(--text3);margin-bottom:5px}
+.pw{margin:8px 0 12px}
+.pl{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:5px}
+.pb{height:7px;background:var(--bg4);border-radius:10px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--sand3),var(--sand));border-radius:10px;transition:width .4s}
+.rpt-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);gap:8px}
+.rpt-row:last-child{border-bottom:none}
+.rn{font-size:12px;color:var(--text2)}
+.ra{font-size:13px;font-weight:700;color:var(--sand);white-space:nowrap}
+.share-btn{display:flex;align-items:center;gap:6px;background:var(--gbg);border:1px solid var(--green);border-radius:10px;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--green);cursor:pointer;width:100%;justify-content:center;margin-bottom:8px}
+.print-btn{display:flex;align-items:center;gap:6px;background:var(--bbg);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;width:100%;justify-content:center}
+.empty{text-align:center;padding:20px 10px;color:var(--text3);font-size:12px;line-height:1.8}
+.divline{border:none;border-top:1px solid var(--sand3);margin:8px 0}
+.btn-del-red{background:var(--rbg);color:var(--red);border:1px solid var(--red);border-radius:10px;padding:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;flex:1;display:flex;align-items:center;justify-content:center;gap:6px}
+.clickable-item{cursor:pointer;transition:all .2s}
+.clickable-item:hover{background:var(--bg3);border-radius:8px;transform:translateX(-2px)}
+.add-task-btn, .add-item-btn{background:var(--sand);color:var(--bg);border:none;border-radius:10px;padding:10px 16px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-item-btn{background:var(--blue);margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-card{background:var(--bg3);border-radius:10px;padding:10px;text-align:center}
+.stat-label{font-size:10px;color:var(--text3)}
+.stat-value{font-size:14px;font-weight:700;color:var(--sand)}
+.print-options{background:var(--bg3);border-radius:12px;padding:15px;margin-bottom:15px}
+.print-option{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.print-option input{width:18px;height:18px;cursor:pointer}
+.print-option label{flex:1;cursor:pointer;font-size:12px}
+.print-preview-content{max-height:70vh;overflow-y:auto;padding:10px}
+@media print{
+  body{max-width:100%;background:#fff;color:#000;margin:0;padding:10px}
+  .tabs,.add-fab,.overlay,.print-btn,.share-btn,.hdr,.no-print{display:none!important}
+  .card{border:1px solid #ccc;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid}
+  .pg{display:block!important}
+  .tot{background:#c8a96e!important;-webkit-print-color-adjust:exact}
+  .print-preview-content{max-height:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🏡 فيلا الحميد</div>
+    <div class="hdr-sub">العزيزية - بلقرن | محاسبة المشروع</div>
+  </div>
+  <div class="hdr-badge" id="hdrBadge">—</div>
+</div>
+
+<div class="scroll" id="mainScroll">
+<!-- ══ الرئيسية ══ -->
+<div class="pg on" id="pg-home"><div id="homeSummary"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📐</span><span class="ct">بيانات المشروع</span><span class="cv">▲</span></div><div class="cb" id="projectData"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📅</span><span class="ct">التواريخ الرئيسية</span><span class="cv">▲</span></div><div class="cb" id="datesData"></div></div>
+</div>
+
+<!-- ══ مهام ══ -->
+<div class="pg" id="pg-tasks">
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">قائمة المهام</span><span class="cv">▲</span></div><div class="cb"><div id="checkWrap"></div><button class="add-task-btn" onclick="openAddTask()">＋ إضافة مهمة جديدة</button><button class="add-item-btn" onclick="openAddFinancialItem()">💰 ＋ إضافة بند مالي جديد</button></div></div>
+</div>
+
+<!-- ══ كهرباء ══ -->
+<div class="pg" id="pg-electric"><div id="electricSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">المواد</span><span class="cv">▲</span></div><div class="cb" id="electricMaterials"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">👷</span><span class="ct">أجور العمال</span><span class="cv">▲</span></div><div class="cb" id="electricLabor"></div></div>
+</div>
+
+<!-- ══ سباكة ══ -->
+<div class="pg" id="pg-plumbing"><div id="plumbingSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">المواد</span><span class="cv">▲</span></div><div class="cb" id="plumbingMaterials"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">👷</span><span class="ct">أجور العمال</span><span class="cv">▲</span></div><div class="cb" id="plumbingLabor"></div></div>
+</div>
+
+<!-- ══ تبليط ══ -->
+<div class="pg" id="pg-tiles"><div id="tilesSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">المواد</span><span class="cv">▲</span></div><div class="cb" id="tilesMaterials"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">👷</span><span class="ct">أجور العمال</span><span class="cv">▲</span></div><div class="cb" id="tilesLabor"></div></div>
+</div>
+
+<!-- ══ ديكور ══ -->
+<div class="pg" id="pg-decor"><div id="decorSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">المواد</span><span class="cv">▲</span></div><div class="cb" id="decorMaterials"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">👷</span><span class="ct">أجور العمال</span><span class="cv">▲</span></div><div class="cb" id="decorLabor"></div></div>
+</div>
+
+<!-- ══ متفرقات ══ -->
+<div class="pg" id="pg-other"><div id="otherSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">المواد</span><span class="cv">▲</span></div><div class="cb" id="otherMaterials"></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">👷</span><span class="ct">أجور العمال</span><span class="cv">▲</span></div><div class="cb" id="otherLabor"></div></div>
+</div>
+
+<!-- ══ تقرير ══ -->
+<div class="pg" id="pg-report"><div id="reportContent"></div><div class="card"><div class="ch nb"><span class="ci">📤</span><span class="ct">مشاركة وطباعة</span></div><div class="cb" style="display:block"><button class="share-btn" onclick="shareWA()">📲 مشاركة عبر واتساب</button><button class="print-btn" onclick="openPrintPreview()">🖨️ معاينة وطباعة</button></div></div></div>
+</div><!-- /scroll -->
+
+<nav class="tabs" id="tabsNav">
+  <button class="tb on"  onclick="sw('home',this)"><span class="tb-ico">🏡</span>الرئيسية</button>
+  <button class="tb"     onclick="sw('tasks',this)"><span class="tb-ico">✅</span>مهام</button>
+  <button class="tb"     onclick="sw('electric',this)"><span class="tb-ico">⚡</span>كهرباء</button>
+  <button class="tb"     onclick="sw('plumbing',this)"><span class="tb-ico">🚿</span>سباكة</button>
+  <button class="tb"     onclick="sw('tiles',this)"><span class="tb-ico">🟦</span>تبليط</button>
+  <button class="tb"     onclick="sw('decor',this)"><span class="tb-ico">🎨</span>ديكور</button>
+  <button class="tb"     onclick="sw('other',this)"><span class="tb-ico">🔧</span>متفرقات</button>
+  <button class="tb"     onclick="sw('report',this)"><span class="tb-ico">📊</span>تقرير</button>
+</nav>
+
+<!-- MODAL لإضافة بند مالي جديد -->
+<div class="overlay h" id="addItemModal">
+  <div class="sheet">
+    <div class="sh-title">💰 إضافة بند مالي جديد</div>
+    <div class="lbl">نوع البند</div>
+    <div class="type-sel"><div class="type-btn on" onclick="setItemType('material',this)">📦 مواد</div><div class="type-btn" onclick="setItemType('labor',this)">👷 أجور عمال</div></div>
+    <input class="inp" id="newItemDesc" placeholder="الوصف (مثال: قرميد، دهانات، مشب)">
+    <div class="inp-row"><input class="inp" id="newItemAmount" type="number" min="0" placeholder="المبلغ (ريال)"></div>
+    <div class="lbl">التبويب المستهدف</div><select class="inp" id="newItemCat"><option value="electric">⚡ كهرباء</option><option value="plumbing">🚿 سباكة</option><option value="tiles">🟦 تبليط</option><option value="decor">🎨 ديكور</option><option value="other">🔧 متفرقات</option></select>
+    <div class="lbl">حالة الدفع</div><select class="inp" id="newItemStatus"><option value="paid">✅ مدفوع بالكامل</option><option value="partial">⏳ مدفوع جزئياً</option><option value="pending">🔴 غير مدفوع</option><option value="planned">📋 مخطط</option></select>
+    <input class="inp" id="newItemPaid" type="number" min="0" placeholder="المبلغ المدفوع (في حالة جزئي)" style="display:none">
+    <div class="ma"><button class="btn-p" onclick="saveNewItem()">💾 حفظ وإضافة</button><button class="btn-s" onclick="closeAddItemModal()">إلغاء</button></div>
+  </div>
+</div>
+
+<!-- MODAL للتعديل العام -->
+<div class="overlay h" id="modal">
+  <div class="sheet">
+    <div class="sh-title" id="modalTitle">تعديل العنصر</div>
+    <input type="hidden" id="editId" value="">
+    <input type="hidden" id="editType" value="">
+    <input type="hidden" id="editCategory" value="">
+    <input type="hidden" id="editItemType" value="">
+    <div class="lbl">نوع البند</div>
+    <div class="type-sel"><div class="type-btn on" onclick="setEditItemType('material',this)">📦 مواد</div><div class="type-btn" onclick="setEditItemType('labor',this)">👷 أجور عمال</div></div>
+    <input class="inp" id="iDesc" placeholder="الوصف">
+    <div class="inp-row"><input class="inp" id="iMat" type="number" min="0" placeholder="المبلغ (ريال)"></div>
+    <div class="lbl">التبويب</div><select class="inp" id="iCat"><option value="electric">⚡ كهرباء</option><option value="plumbing">🚿 سباكة</option><option value="tiles">🟦 تبليط</option><option value="decor">🎨 ديكور</option><option value="other">🔧 متفرقات</option></select>
+    <div class="lbl">حالة الدفع</div><select class="inp" id="iStat"><option value="paid">✅ مدفوع بالكامل</option><option value="partial">⏳ مدفوع جزئياً</option><option value="pending">🔴 غير مدفوع</option><option value="planned">📋 مخطط</option></select>
+    <input class="inp" id="iPaid" type="number" min="0" placeholder="المبلغ المدفوع" style="display:none">
+    <div class="ma"><button class="btn-p" onclick="saveEditItem()">💾 حفظ</button><button class="btn-s" onclick="closeModal()">إلغاء</button></div>
+    <div class="ma" id="deleteBtnContainer" style="margin-top:8px;display:none"><button class="btn-del-red" onclick="deleteCurrentItem()">🗑 حذف نهائياً</button></div>
+  </div>
+</div>
+
+<!-- MODAL لمعاينة الطباعة -->
+<div class="overlay h" id="printPreviewModal">
+  <div class="sheet" style="max-height:90vh">
+    <div class="sh-title">📄 معاينة قبل الطباعة</div>
+    <div class="print-options">
+      <div class="print-option"><input type="checkbox" id="printHome" checked><label for="printHome">🏠 البيانات الرئيسية والتواريخ</label></div>
+      <div class="print-option"><input type="checkbox" id="printTasks" checked><label for="printTasks">✅ المهام</label></div>
+      <div class="print-option"><input type="checkbox" id="printElectric" checked><label for="printElectric">⚡ كهرباء</label></div>
+      <div class="print-option"><input type="checkbox" id="printPlumbing" checked><label for="printPlumbing">🚿 سباكة</label></div>
+      <div class="print-option"><input type="checkbox" id="printTiles" checked><label for="printTiles">🟦 تبليط</label></div>
+      <div class="print-option"><input type="checkbox" id="printDecor" checked><label for="printDecor">🎨 ديكور</label></div>
+      <div class="print-option"><input type="checkbox" id="printOther" checked><label for="printOther">🔧 متفرقات</label></div>
+      <div class="print-option"><input type="checkbox" id="printReport" checked><label for="printReport">📊 التحليل المالي</label></div>
+    </div>
+    <div class="ma"><button class="btn-p" onclick="doPrint()">🖨️ طباعة</button><button class="btn-s" onclick="closePrintPreview()">إلغاء</button></div>
+    <div id="printPreviewContent" class="print-preview-content" style="margin-top:15px;border-top:1px solid var(--border);padding-top:15px"></div>
+  </div>
+</div>
+
+<script>
+// ==================== البيانات الرئيسية ====================
+const CATEGORIES = ['electric', 'plumbing', 'tiles', 'decor', 'other'];
+const CAT_NAMES = { electric:'⚡ كهرباء', plumbing:'🚿 سباكة', tiles:'🟦 تبليط', decor:'🎨 ديكور', other:'🔧 متفرقات' };
+
+let ALL_DATA = JSON.parse(localStorage.getItem('villa_final_v6') || JSON.stringify({
+  projectInfo: { "المساحة الكلية": "560 م²", "مساحة الأرض": "733 م²", "الدور الأرضي": "205 م²", "الدور الأول": "205 م²", "الديوانية": "41 م²", "مجموع الجدران": "2,770 م²" },
+  dates: { "بدء بناء العظم": "24/4/1440 هـ", "سداد العظم": "28/10/2020م", "بداية التشطيب الأولى": "14/2/1442 هـ", "بداية التشطيب الثانية": "" },
+  materials: {
+    electric: [{id:"e_mat1", name:"مواد كهرباء التأسيس", amount:14728, status:"paid"},{id:"e_mat2", name:"إنارة داخلية", amount:15147, status:"planned"},{id:"e_mat3", name:"مفاتيح وأفياش", amount:7375, status:"planned"}],
+    plumbing: [{id:"p_mat1", name:"مواد سباكة التأسيس", amount:15613, status:"paid"},{id:"p_mat2", name:"كراسي", amount:2450, status:"planned"},{id:"p_mat3", name:"سخانات", amount:2250, status:"planned"}],
+    tiles: [{id:"t_mat1", name:"مواد اللياسة", amount:6500, status:"paid"},{id:"t_mat2", name:"أرضيات", amount:33700, status:"planned"},{id:"t_mat3", name:"رخام الدرج", amount:4620, status:"planned"}],
+    decor: [{id:"d_mat1", name:"قرميد", amount:12350, status:"paid"},{id:"d_mat2", name:"مشب", amount:8000, status:"planned"},{id:"d_mat3", name:"دهانات خارجية", amount:25000, status:"planned"},{id:"d_mat4", name:"ديكور جبس", amount:15000, status:"planned"}],
+    other: [{id:"o_mat1", name:"أعمال تجهيز وتسوية", amount:12950, status:"paid"},{id:"o_mat2", name:"حلوق أبواب حديد", amount:5100, status:"paid"},{id:"o_mat3", name:"أعمال الحديد", amount:18330, status:"planned"}]
+  },
+  labor: {
+    electric: [{id:"e_lab1", name:"أجرة كهربائي التأسيس", amount:7000, status:"paid"},{id:"e_lab2", name:"باقي أجرة الكهربائي", amount:6000, status:"pending"}],
+    plumbing: [{id:"p_lab1", name:"أجرة سباك التأسيس", amount:3500, status:"paid"},{id:"p_lab2", name:"باقي أجرة السباك", amount:4000, status:"pending"}],
+    tiles: [{id:"t_lab1", name:"أجرة المبلط", amount:26000, status:"pending"},{id:"t_lab2", name:"أجرة اللياسة", amount:26000, status:"paid"}],
+    decor: [{id:"d_lab1", name:"أجرة تركيب الديكور", amount:12000, status:"planned"},{id:"d_lab2", name:"أجرة دهان", amount:18000, status:"planned"}],
+    other: [{id:"o_lab1", name:"تأسيس مكيفات", amount:7900, status:"paid"}]
+  },
+  tasks: [
+    {id:"task1", text:"تصوير جميع تمديدات الكهرباء والسباكة قبل الطمر", completed:false},
+    {id:"task2", text:"أحضر المبلط لإعطاء المنسوب النهائي", completed:false},
+    {id:"task3", text:"تأسيس خرطوش مياه لغسل البلاط", completed:false},
+    {id:"task4", text:"اختيار القرميد والديكور الخارجي", completed:false}
+  ]
+}));
+
+function saveAllData() { localStorage.setItem('villa_final_v6', JSON.stringify(ALL_DATA)); }
+
+const FIXED_COSTS = { land:200000, skeleton:273000, phase1:12950+20113+21728+5100+2800+32500+7900+1720+12350+9000+3000 };
+const f = n => Math.round(n).toLocaleString('ar-EG');
+let currentEdit = { type: null, id: null, category: null, itemType: null };
+let newItemType = 'material';
+
+// ==================== إضافة بند مالي جديد ====================
+function openAddFinancialItem() {
+  document.getElementById('newItemDesc').value = '';
+  document.getElementById('newItemAmount').value = '';
+  document.getElementById('newItemPaid').style.display = 'none';
+  document.getElementById('newItemStatus').value = 'paid';
+  document.getElementById('addItemModal').classList.remove('h');
+}
+
+function closeAddItemModal() { document.getElementById('addItemModal').classList.add('h'); }
+
+function setItemType(type, btn) {
+  newItemType = type;
+  document.querySelectorAll('#addItemModal .type-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function saveNewItem() {
+  const desc = document.getElementById('newItemDesc').value.trim();
+  if(!desc) { alert('أدخل وصف البند'); return; }
+  const amount = parseFloat(document.getElementById('newItemAmount').value) || 0;
+  if(amount <= 0) { alert('أدخل المبلغ'); return; }
+  const category = document.getElementById('newItemCat').value;
+  const status = document.getElementById('newItemStatus').value;
+  const paidAmt = status === 'partial' ? (parseFloat(document.getElementById('newItemPaid').value) || 0) : (status === 'paid' ? amount : 0);
+  
+  const newId = Date.now().toString();
+  const newItem = { id: newId, name: desc, amount: amount, status: status, paidAmt: paidAmt };
+  
+  if(newItemType === 'material') {
+    if(!ALL_DATA.materials[category]) ALL_DATA.materials[category] = [];
+    ALL_DATA.materials[category].push(newItem);
+  } else {
+    if(!ALL_DATA.labor[category]) ALL_DATA.labor[category] = [];
+    ALL_DATA.labor[category].push(newItem);
+  }
+  
+  saveAllData();
+  closeAddItemModal();
+  renderAll();
+  alert('✓ تم إضافة البند بنجاح إلى قسم ' + document.getElementById('newItemCat').selectedOptions[0].text);
+}
+
+// ==================== دوال التعديل ====================
+function openEditModal(type, category, id, itemType) {
+  currentEdit = { type, category, id, itemType };
+  let item = null;
+  if(type === 'material') item = ALL_DATA.materials[category]?.find(i => i.id === id);
+  else if(type === 'labor') item = ALL_DATA.labor[category]?.find(i => i.id === id);
+  else if(type === 'task') item = ALL_DATA.tasks.find(t => t.id === id);
+  
+  if(!item) return;
+  
+  document.getElementById('modalTitle').innerText = `✏️ تعديل ${type === 'task' ? 'المهمة' : (itemType === 'material' ? 'مادة' : 'أجرة')}`;
+  document.getElementById('deleteBtnContainer').style.display = 'flex';
+  document.getElementById('iDesc').value = item.name || item.text || '';
+  document.getElementById('iMat').value = item.amount || 0;
+  document.getElementById('iCat').value = category || 'electric';
+  document.getElementById('iStat').value = item.status || 'pending';
+  document.getElementById('iPaid').value = item.paidAmt || 0;
+  document.getElementById('editId').value = id;
+  document.getElementById('editType').value = type;
+  document.getElementById('editCategory').value = category;
+  document.getElementById('editItemType').value = itemType;
+  
+  if(type === 'task') {
+    document.getElementById('iCat').parentElement.style.display = 'none';
+  } else {
+    document.getElementById('iCat').parentElement.style.display = 'block';
+  }
+  
+  document.getElementById('modal').classList.remove('h');
+}
+
+function saveEditItem() {
+  const desc = document.getElementById('iDesc').value.trim();
+  if(!desc) { alert('أدخل الوصف'); return; }
+  const amount = parseFloat(document.getElementById('iMat').value) || 0;
+  const newCategory = document.getElementById('iCat').value;
+  const newStatus = document.getElementById('iStat').value;
+  const { type, category, id, itemType } = currentEdit;
+  
+  if(type === 'task') {
+    const task = ALL_DATA.tasks.find(t => t.id === id);
+    if(task) task.text = desc;
+  } 
+  else if(type === 'material') {
+    const item = ALL_DATA.materials[category]?.find(i => i.id === id);
+    if(item) {
+      item.name = desc;
+      item.amount = amount;
+      item.status = newStatus;
+      if(category !== newCategory) {
+        ALL_DATA.materials[category] = ALL_DATA.materials[category].filter(i => i.id !== id);
+        if(!ALL_DATA.materials[newCategory]) ALL_DATA.materials[newCategory] = [];
+        ALL_DATA.materials[newCategory].push(item);
+      }
+    }
+  } 
+  else if(type === 'labor') {
+    const item = ALL_DATA.labor[category]?.find(i => i.id === id);
+    if(item) {
+      item.name = desc;
+      item.amount = amount;
+      item.status = newStatus;
+      if(category !== newCategory) {
+        ALL_DATA.labor[category] = ALL_DATA.labor[category].filter(i => i.id !== id);
+        if(!ALL_DATA.labor[newCategory]) ALL_DATA.labor[newCategory] = [];
+        ALL_DATA.labor[newCategory].push(item);
+      }
+    }
+  }
+  
+  saveAllData();
+  closeModal();
+  renderAll();
+}
+
+function deleteCurrentItem() {
+  const { type, category, id } = currentEdit;
+  if(!confirm('⚠️ هل أنت متأكد من الحذف؟')) return;
+  if(type === 'task') ALL_DATA.tasks = ALL_DATA.tasks.filter(t => t.id !== id);
+  else if(type === 'material') ALL_DATA.materials[category] = ALL_DATA.materials[category].filter(i => i.id !== id);
+  else if(type === 'labor') ALL_DATA.labor[category] = ALL_DATA.labor[category].filter(i => i.id !== id);
+  saveAllData();
+  closeModal();
+  renderAll();
+}
+
+function openAddTask() {
+  const newTask = { id: Date.now().toString(), text: "مهمة جديدة", completed: false };
+  ALL_DATA.tasks.push(newTask);
+  saveAllData();
+  renderAll();
+  setTimeout(() => openEditModal('task', null, newTask.id, null), 100);
+}
+
+function toggleTaskComplete(taskId) {
+  const task = ALL_DATA.tasks.find(t => t.id === taskId);
+  if(task) task.completed = !task.completed;
+  saveAllData();
+  renderAll();
+}
+
+function closeModal() { document.getElementById('modal').classList.add('h'); currentEdit = {}; }
+function setEditItemType(t, btn) { 
+  document.querySelectorAll('#modal .type-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ==================== عرض البيانات ====================
+function renderHome() {
+  document.getElementById('projectData').innerHTML = Object.entries(ALL_DATA.projectInfo).map(([k,v]) => `<div class="ir"><span class="il">${k}</span><span class="iv">${v}</span></div>`).join('');
+  document.getElementById('datesData').innerHTML = Object.entries(ALL_DATA.dates).map(([k,v]) => `<div class="ir clickable-item" onclick="editDateItem('${k}')"><span class="il">${k}</span><span class="iv">${v || '⏳ لم يحدد'}</span></div>`).join('');
+}
+
+function editDateItem(key) {
+  const newVal = prompt(`تعديل ${key}:`, ALL_DATA.dates[key] || '');
+  if(newVal !== null) { ALL_DATA.dates[key] = newVal; saveAllData(); renderHome(); renderReport(); }
+}
+
+function renderCategoryItems(cat) {
+  const materials = ALL_DATA.materials[cat] || [];
+  const materialsContainer = document.getElementById(cat+'Materials');
+  if(materialsContainer) {
+    const paidMat = materials.filter(i => i.status === 'paid');
+    const partialMat = materials.filter(i => i.status === 'partial');
+    const pendingMat = materials.filter(i => i.status === 'pending');
+    const plannedMat = materials.filter(i => i.status === 'planned');
+    
+    let html = '';
+    if(paidMat.length) html += '<div class="sl2">✅ مدفوع بالكامل</div>' + paidMat.map(i => `<div class="er clickable-item" onclick="openEditModal(\'material\',\'${cat}\',\'${i.id}\',\'material\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tg">✓ مدفوع</span></div></div>`).join('');
+    if(partialMat.length) html += '<div class="sl2">⏳ مدفوع جزئياً</div>' + partialMat.map(i => `<div class="er clickable-item" onclick="openEditModal(\'material\',\'${cat}\',\'${i.id}\',\'material\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag ty">جزئي ${f(i.paidAmt||0)}</span></div></div>`).join('');
+    if(pendingMat.length) html += '<div class="sl2">🔴 غير مدفوع</div>' + pendingMat.map(i => `<div class="er clickable-item" onclick="openEditModal(\'material\',\'${cat}\',\'${i.id}\',\'material\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tr">غير مدفوع</span></div></div>`).join('');
+    if(plannedMat.length) html += '<div class="sl2">📋 مخطط</div>' + plannedMat.map(i => `<div class="er clickable-item" onclick="openEditModal(\'material\',\'${cat}\',\'${i.id}\',\'material\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tp">مخطط</span></div></div>`).join('');
+    if(!materials.length) html = '<div class="empty">لا توجد مواد</div>';
+    materialsContainer.innerHTML = html;
+  }
+  
+  const labors = ALL_DATA.labor[cat] || [];
+  const laborContainer = document.getElementById(cat+'Labor');
+  if(laborContainer) {
+    const paidLab = labors.filter(i => i.status === 'paid');
+    const partialLab = labors.filter(i => i.status === 'partial');
+    const pendingLab = labors.filter(i => i.status === 'pending');
+    const plannedLab = labors.filter(i => i.status === 'planned');
+    
+    let html = '';
+    if(paidLab.length) html += '<div class="sl2">✅ مدفوع بالكامل</div>' + paidLab.map(i => `<div class="er clickable-item" onclick="openEditModal(\'labor\',\'${cat}\',\'${i.id}\',\'labor\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tg">✓ مدفوع</span></div></div>`).join('');
+    if(partialLab.length) html += '<div class="sl2">⏳ مدفوع جزئياً</div>' + partialLab.map(i => `<div class="er clickable-item" onclick="openEditModal(\'labor\',\'${cat}\',\'${i.id}\',\'labor\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag ty">جزئي ${f(i.paidAmt||0)}</span></div></div>`).join('');
+    if(pendingLab.length) html += '<div class="sl2">🔴 غير مدفوع</div>' + pendingLab.map(i => `<div class="er clickable-item" onclick="openEditModal(\'labor\',\'${cat}\',\'${i.id}\',\'labor\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tr">غير مدفوع</span></div></div>`).join('');
+    if(plannedLab.length) html += '<div class="sl2">📋 مخطط</div>' + plannedLab.map(i => `<div class="er clickable-item" onclick="openEditModal(\'labor\',\'${cat}\',\'${i.id}\',\'labor\')"><div class="er-info"><div class="er-name">${i.name}</div></div><div class="er-right"><div class="er-amt">${f(i.amount)} ر</div><span class="tag tp">مخطط</span></div></div>`).join('');
+    if(!labors.length) html = '<div class="empty">لا توجد أجور</div>';
+    laborContainer.innerHTML = html;
+  }
+}
+
+function renderCatSummary(cat) {
+  const materials = ALL_DATA.materials[cat] || [];
+  const labors = ALL_DATA.labor[cat] || [];
+  const matTotal = materials.reduce((s,i)=>s+i.amount,0);
+  const labTotal = labors.reduce((s,i)=>s+i.amount,0);
+  const el = document.getElementById(cat+'Sum');
+  if(el) el.innerHTML = `<div class="sg"><div class="sc"><div class="sv">${f(matTotal)}</div><div class="sl">إجمالي المواد</div></div><div class="sc"><div class="sv">${f(labTotal)}</div><div class="sl">إجمالي الأجور</div></div><div class="sc"><div class="sv" style="color:var(--green)">${f(matTotal+labTotal)}</div><div class="sl">الإجمالي</div></div></div>`;
+}
+
+function renderTasks() {
+  const completed = ALL_DATA.tasks.filter(t => t.completed).length;
+  const pct = ALL_DATA.tasks.length ? Math.round(completed/ALL_DATA.tasks.length*100) : 0;
+  const wrap = document.getElementById('checkWrap');
+  wrap.innerHTML = `<div class="pw"><div class="pl"><span>المهام المنجزة</span><span>${completed}/${ALL_DATA.tasks.length}</span></div><div class="pb"><div class="pf" style="width:${pct}%"></div></div></div>` +
+    ALL_DATA.tasks.map(t => `<div class="er" onclick="toggleTaskComplete('${t.id}')" style="cursor:pointer"><div style="width:22px;height:22px;border:2px solid ${t.completed?'var(--green)':'var(--border)'};border-radius:6px;background:${t.completed?'var(--green)':'transparent'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">${t.completed?'✓':''}</div><div class="er-info" style="margin-right:8px"><div class="er-name" style="${t.completed?'text-decoration:line-through;color:var(--text3)':''}" onclick="event.stopPropagation();openEditModal('task',null,'${t.id}',null)">${t.text}</div></div></div>`).join('');
+  document.getElementById('hdrBadge').textContent = pct + '٪ مهام';
+}
+
+function renderReport() {
+  let totalMaterials = 0, totalLabor = 0;
+  CATEGORIES.forEach(cat => {
+    totalMaterials += (ALL_DATA.materials[cat] || []).reduce((s,i)=>s+i.amount,0);
+    totalLabor += (ALL_DATA.labor[cat] || []).reduce((s,i)=>s+i.amount,0);
+  });
+  const totalPaid = FIXED_COSTS.land + FIXED_COSTS.skeleton + FIXED_COSTS.phase1 + totalMaterials + totalLabor;
+  document.getElementById('reportContent').innerHTML = `<div class="tot"><div class="tl">إجمالي المدفوع</div><div class="ta">${f(totalPaid)} ريال</div></div><div class="sg"><div class="sc"><div class="sv">${f(totalMaterials)}</div><div class="sl">إجمالي المواد</div></div><div class="sc"><div class="sv">${f(totalLabor)}</div><div class="sl">إجمالي الأجور</div></div></div>`;
+}
+
+function shareWA() {
+  let totalMaterials = 0, totalLabor = 0;
+  CATEGORIES.forEach(cat => {
+    totalMaterials += (ALL_DATA.materials[cat] || []).reduce((s,i)=>s+i.amount,0);
+    totalLabor += (ALL_DATA.labor[cat] || []).reduce((s,i)=>s+i.amount,0);
+  });
+  const totalPaid = FIXED_COSTS.land + FIXED_COSTS.skeleton + FIXED_COSTS.phase1 + totalMaterials + totalLabor;
+  window.open('https://wa.me/?text=' + encodeURIComponent(`🏡 فيلا الحميد\n💰 إجمالي المدفوع: ${f(totalPaid)} ر`), '_blank');
+}
+
+// ==================== معاينة وطباعة متقدمة ====================
+function openPrintPreview() {
+  updatePrintPreview();
+  document.getElementById('printPreviewModal').classList.remove('h');
+}
+
+function closePrintPreview() {
+  document.getElementById('printPreviewModal').classList.add('h');
+}
+
+function updatePrintPreview() {
+  const container = document.getElementById('printPreviewContent');
+  let html = '<div style="direction:rtl;font-family:Cairo">';
+  
+  if(document.getElementById('printHome').checked) {
+    html += '<div class="card"><div class="ch nb"><span class="ci">🏠</span><span class="ct">بيانات المشروع</span></div><div class="cb">' + 
+      Object.entries(ALL_DATA.projectInfo).map(([k,v]) => `<div class="ir"><span class="il">${k}</span><span class="iv">${v}</span></div>`).join('') + '</div></div>';
+    html += '<div class="card"><div class="ch nb"><span class="ci">📅</span><span class="ct">التواريخ الرئيسية</span></div><div class="cb">' + 
+      Object.entries(ALL_DATA.dates).map(([k,v]) => `<div class="ir"><span class="il">${k}</span><span class="iv">${v || '⏳ لم يحدد'}</span></div>`).join('') + '</div></div>';
+  }
+  
+  if(document.getElementById('printTasks').checked) {
+    const completed = ALL_DATA.tasks.filter(t => t.completed).length;
+    html += '<div class="card"><div class="ch nb"><span class="ci">✅</span><span class="ct">المهام (' + completed + '/' + ALL_DATA.tasks.length + ')</span></div><div class="cb">' + 
+      ALL_DATA.tasks.map(t => `<div class="er"><div class="er-info"><div class="er-name" style="${t.completed?'text-decoration:line-through;opacity:0.7':''}">${t.text}</div></div><div class="er-right">${t.completed?'✓':'○'}</div></div>`).join('') + '</div></div>';
+  }
+  
+  const printCats = [
+    {id:'printElectric', cat:'electric', name:'⚡ كهرباء'},
+    {id:'printPlumbing', cat:'plumbing', name:'🚿 سباكة'},
+    {id:'printTiles', cat:'tiles', name:'🟦 تبليط'},
+    {id:'printDecor', cat:'decor', name:'🎨 ديكور'},
+    {id:'printOther', cat:'other', name:'🔧 متفرقات'}
+  ];
+  
+  printCats.forEach(pc => {
+    if(document.getElementById(pc.id).checked) {
+      const materials = ALL_DATA.materials[pc.cat] || [];
+      const labors = ALL_DATA.labor[pc.cat] || [];
+      if(materials.length || labors.length) {
+        html += '<div class="card"><div class="ch nb"><span class="ci"></span><span class="ct">' + pc.name + '</span></div><div class="cb">';
+        if(materials.length) {
+          html += '<div class="sl2">📦 المواد</div>' + materials.map(m => `<div class="er"><div class="er-info"><div class="er-name">${m.name}</div></div><div class="er-right"><div class="er-amt">${f(m.amount)} ر</div><span class="tag">${m.status === 'paid' ? '✓ مدفوع' : (m.status === 'planned' ? '📋 مخطط' : (m.status === 'partial' ? '⏳ جزئي' : '🔴 غير مدفوع'))}</span></div></div>`).join('');
+        }
+        if(labors.length) {
+          html += '<div class="sl2">👷 أجور العمال</div>' + labors.map(l => `<div class="er"><div class="er-info"><div class="er-name">${l.name}</div></div><div class="er-right"><div class="er-amt">${f(l.amount)} ر</div><span class="tag">${l.status === 'paid' ? '✓ مدفوع' : (l.status === 'planned' ? '📋 مخطط' : (l.status === 'partial' ? '⏳ جزئي' : '🔴 غير مدفوع'))}</span></div></div>`).join('');
+        }
+        html += '</div></div>';
+      }
+    }
+  });
+  
+  if(document.getElementById('printReport').checked) {
+    let totalMaterials = 0, totalLabor = 0;
+    CATEGORIES.forEach(cat => {
+      totalMaterials += (ALL_DATA.materials[cat] || []).reduce((s,i)=>s+i.amount,0);
+      totalLabor += (ALL_DATA.labor[cat] || []).reduce((s,i)=>s+i.amount,0);
+    });
+    const totalPaid = FIXED_COSTS.land + FIXED_COSTS.skeleton + FIXED_COSTS.phase1 + totalMaterials + totalLabor;
+    html += '<div class="card"><div class="ch nb"><span class="ci">📊</span><span class="ct">التحليل المالي</span></div><div class="cb"><div class="tot" style="margin-bottom:10px"><div class="tl">إجمالي المدفوع</div><div class="ta">' + f(totalPaid) + ' ريال</div></div></div></div>';
+  }
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function doPrint() {
+  updatePrintPreview();
+  const printContent = document.getElementById('printPreviewContent').innerHTML;
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <html dir="rtl">
+    <head><title>تقرير فيلا الحميد</title>
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
+      body{padding:20px;background:#fff;color:#000}
+      .card{border:1px solid #ddd;border-radius:8px;margin-bottom:15px;overflow:hidden}
+      .ch{background:#f5f5f5;padding:10px;border-bottom:1px solid #ddd}
+      .cb{padding:12px}
+      .ir{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee}
+      .il{font-size:12px;color:#666}
+      .iv{font-size:12px;font-weight:600}
+      .er{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}
+      .er-info{flex:1}
+      .er-name{font-size:12px;font-weight:600}
+      .er-amt{font-size:12px;font-weight:700;color:#c8a96e}
+      .sl2{font-size:11px;font-weight:700;color:#9a7a45;margin:10px 0 5px}
+      .tot{background:#c8a96e;padding:12px;text-align:center;border-radius:8px}
+      .tot .tl{font-size:10px;color:rgba(0,0,0,.6)}
+      .tot .ta{font-size:20px;font-weight:900;color:#000}
+      .tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;background:#eee}
+    </style>
+    </head>
+    <body>${printContent}</body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.print();
+  closePrintPreview();
+}
+
+function sw(name, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  btn.classList.add('on');
+  document.getElementById('mainScroll').scrollTop = 0;
+  if(name === 'report') renderReport();
+}
+function tog(h) { const c = h.closest('.card'); c.classList.toggle('col'); const cv = h.querySelector('.cv'); if(cv) cv.style.transform = c.classList.contains('col') ? 'rotate(180deg)' : ''; }
+
+// مراقبة تغيير حالة الدفع
+document.getElementById('newItemStatus')?.addEventListener('change', function() {
+  document.getElementById('newItemPaid').style.display = this.value === 'partial' ? 'block' : 'none';
+});
+document.getElementById('iStat')?.addEventListener('change', function() {
+  document.getElementById('iPaid').style.display = this.value === 'partial' ? 'block' : 'none';
+});
+
+function renderAll() {
+  renderHome();
+  CATEGORIES.forEach(cat => {
+    renderCategoryItems(cat);
+    renderCatSummary(cat);
+  });
+  renderTasks();
+  renderReport();
+}
+renderAll();
+</script>
+</body>
+</html>
