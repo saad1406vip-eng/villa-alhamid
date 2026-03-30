@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="فيلا الحميد">
+<title>فيلا الحميد - نظام محاسبي متكامل مع تعديل شامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#c8a96e;--sand2:#e8d5b0;--sand3:#9a7a45;--bg:#0f0e0c;--bg2:#181612;--bg3:#22201a;--bg4:#2c2920;--text:#f0e8d8;--text2:#b8a888;--text3:#6a6050;--green:#5a9e6f;--gbg:#182218;--red:#c06060;--rbg:#221818;--yellow:#c8a030;--ybg:#221e10;--blue:#5080a0;--bbg:#101820;--border:#353025;--r:14px;--tab:60px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif}
+body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;max-width:430px;margin:0 auto}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr-title{font-size:17px;font-weight:900;color:var(--sand)}
+.hdr-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.hdr-badge{background:var(--sand3);color:var(--bg);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.tabs{display:flex;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;height:var(--tab);overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tb{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:transparent;color:var(--text3);font-family:'Cairo',sans-serif;font-size:9px;font-weight:700;cursor:pointer;padding:6px 12px;position:relative;transition:color .2s;white-space:nowrap}
+.tb.on{color:var(--sand)}
+.tb.on::after{content:'';position:absolute;top:0;left:15%;right:15%;height:2px;background:var(--sand);border-radius:0 0 3px 3px}
+.tb-ico{font-size:18px;line-height:1}
+.pg{display:none;padding:14px}
+.pg.on{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.ch{padding:12px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.ch.nb{border-bottom:none;cursor:default}
+.ch-clickable{cursor:pointer}
+.ci{font-size:18px;flex-shrink:0}
+.ct{font-size:13px;font-weight:700;flex:1}
+.cv{color:var(--text3);transition:transform .25s;font-size:11px;flex-shrink:0}
+.card.col .cv{transform:rotate(180deg)}
+.cb{padding:12px 14px}
+.card.col .cb{display:none}
+.ir{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);gap:8px}
+.ir:last-child{border-bottom:none}
+.il{font-size:11px;color:var(--text3);flex-shrink:0;padding-left:8px}
+.iv{font-size:11px;color:var(--text);text-align:left;font-weight:600}
+.iv-clickable{cursor:pointer;transition:opacity .2s}
+.iv-clickable:hover{opacity:0.8;text-decoration:underline}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center}
+.sv{font-size:15px;font-weight:900;color:var(--sand);line-height:1.2}
+.sl{font-size:10px;color:var(--text3);margin-top:3px}
+.tot{background:linear-gradient(135deg,var(--sand3),var(--sand));border-radius:var(--r);padding:14px 16px;text-align:center;margin-bottom:12px}
+.tot .tl{font-size:10px;color:rgba(0,0,0,.6);font-weight:600}
+.tot .ta{font-size:22px;font-weight:900;color:var(--bg);line-height:1.1}
+.tot .ts{font-size:10px;color:rgba(0,0,0,.5)}
+.tag{display:inline-flex;align-items:center;gap:3px;border-radius:8px;padding:2px 7px;font-size:10px;font-weight:700;white-space:nowrap}
+.tg{background:var(--gbg);color:var(--green)}
+.tr{background:var(--rbg);color:var(--red)}
+.ty{background:var(--ybg);color:var(--yellow)}
+.tb2{background:var(--bbg);color:var(--blue)}
+.ts2{background:var(--bg4);color:var(--text2)}
+.er{display:flex;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);gap:8px;cursor:pointer;transition:background .2s}
+.er:hover{background:var(--bg3);border-radius:8px}
+.er:last-child{border-bottom:none}
+.er-info{flex:1;min-width:0}
+.er-name{font-size:12px;color:var(--text);font-weight:600;margin-bottom:2px}
+.er-meta{font-size:10px;color:var(--text3);margin-bottom:3px}
+.er-right{text-align:left;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.er-amt{font-size:13px;font-weight:700;color:var(--sand)}
+.er-del{background:none;border:none;color:var(--text3);font-size:14px;cursor:pointer;padding:2px 5px;border-radius:6px;margin-top:2px;z-index:2}
+.er-del:hover{color:var(--red)}
+.sl2{font-size:10px;font-weight:700;color:var(--sand3);letter-spacing:.8px;padding:10px 0 5px;text-transform:uppercase}
+.note{border-radius:10px;padding:9px 11px;font-size:11px;margin-bottom:9px;line-height:1.7}
+.ny{background:var(--ybg);border:1px solid var(--yellow);color:var(--yellow)}
+.nr{background:var(--rbg);border:1px solid var(--red);color:var(--red)}
+.ng{background:var(--gbg);border:1px solid var(--green);color:var(--green)}
+.nb2{background:var(--bbg);border:1px solid var(--blue);color:var(--blue)}
+.ul{list-style:none}
+.ul li{padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.ul li:last-child{border-bottom:none}
+.ul li::before{content:'▸';color:var(--sand);flex-shrink:0}
+.add-fab{position:fixed;bottom:calc(var(--tab) + 14px);left:50%;transform:translateX(-50%);background:var(--sand);color:var(--bg);border:none;border-radius:30px;padding:10px 22px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 20px rgba(200,169,110,.4);z-index:40;display:none;align-items:center;gap:6px;white-space:nowrap}
+.add-fab.vis{display:flex}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.overlay.h{display:none}
+.sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;padding:20px 18px 34px}
+.sheet::-webkit-scrollbar{display:none}
+.sh-title{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);margin-bottom:10px;direction:rtl}
+.inp:focus{outline:none;border-color:var(--sand)}
+select.inp{-webkit-appearance:none;cursor:pointer}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-p{flex:1;background:var(--sand);color:var(--bg);border:none;border-radius:10px;padding:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.btn-s{background:var(--bg4);color:var(--text2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-family:'Cairo',sans-serif;font-size:13px;cursor:pointer}
+.ma{display:flex;gap:10px;margin-top:6px}
+.type-sel{display:flex;gap:6px;margin-bottom:10px}
+.type-btn{flex:1;padding:8px 2px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text3);font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
+.type-btn.on{background:var(--sand3);color:var(--bg);border-color:var(--sand3)}
+.lbl{font-size:11px;color:var(--text3);margin-bottom:5px}
+.pw{margin:8px 0 12px}
+.pl{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:5px}
+.pb{height:7px;background:var(--bg4);border-radius:10px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--sand3),var(--sand));border-radius:10px;transition:width .4s}
+.rpt-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);gap:8px}
+.rpt-row:last-child{border-bottom:none}
+.rn{font-size:12px;color:var(--text2)}
+.ra{font-size:13px;font-weight:700;color:var(--sand);white-space:nowrap}
+.share-btn{display:flex;align-items:center;gap:6px;background:var(--gbg);border:1px solid var(--green);border-radius:10px;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--green);cursor:pointer;width:100%;justify-content:center;margin-bottom:8px}
+.print-btn{display:flex;align-items:center;gap:6px;background:var(--bbg);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;width:100%;justify-content:center}
+.empty{text-align:center;padding:20px 10px;color:var(--text3);font-size:12px;line-height:1.8}
+.divline{border:none;border-top:1px solid var(--sand3);margin:8px 0}
+.btn-del-red{background:var(--rbg);color:var(--red);border:1px solid var(--red);border-radius:10px;padding:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;flex:1;display:flex;align-items:center;justify-content:center;gap:6px}
+@media print{.tabs,.add-fab,.er-del,.overlay,button{display:none!important} body{max-width:100%;background:#fff;color:#000} .card{border:1px solid #ccc;margin-bottom:8px;break-inside:avoid} .pg{display:block!important} .tot{background:#c8a96e!important;-webkit-print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🏡 فيلا الحميد</div>
+    <div class="hdr-sub">العزيزية - بلقرن | محاسبة المشروع</div>
+  </div>
+  <div class="hdr-badge" id="hdrBadge">—</div>
+</div>
+
+<div class="scroll" id="mainScroll">
+<!-- ══ الرئيسية ══ -->
+<div class="pg on" id="pg-home"><div id="homeSummary"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📐</span><span class="ct">بيانات المشروع</span><span class="cv">▲</span></div>
+    <div class="cb"><div class="ir"><span class="il">العنوان</span><span class="iv">العزيزية - سبت العلاية - بلقرن</span></div><div class="ir"><span class="il">الرمز البريدي</span><span class="iv">67513</span></div><div class="ir"><span class="il">رقم المبنى</span><span class="iv">ALWB4206 | 4206 192</span></div><div class="ir"><span class="il">الإحداثيات</span><span class="iv">19.5861 , 41.9498</span></div><div class="ir"><span class="il">مساحة الأرض</span><span class="iv">733 م²</span></div><div class="ir"><span class="il">الدور الأرضي</span><span class="iv">205 م²</span></div><div class="ir"><span class="il">الدور الأول</span><span class="iv">205 م²</span></div><div class="ir"><span class="il">غرفة الدرج</span><span class="iv">10 م²</span></div><div class="ir"><span class="il">الديوانية</span><span class="iv">41 م²</span></div><div class="ir"><span class="il">أرضية الحوش</span><span class="iv">364 م²</span></div><div class="ir"><span class="il">الأسوار</span><span class="iv">98 م طولي</span></div><div class="ir"><span class="il">مجموع المسطحات</span><span class="iv" style="color:var(--sand)">560 م²</span></div><div class="ir"><span class="il">جدران داخلية + سقف</span><span class="iv">1,547 م²</span></div><div class="ir"><span class="il">جدران خارجية</span><span class="iv">635 م²</span></div><div class="ir"><span class="il">جدران السور</span><span class="iv">294 م²</span></div><div class="ir"><span class="il">مجموع الجدران</span><span class="iv" style="color:var(--sand)">2,770 م²</span></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📅</span><span class="ct">التواريخ الرئيسية</span><span class="cv">▲</span></div>
+    <div class="cb">
+      <div class="ir"><span class="il">بدء بناء العظم</span><span class="iv">24/4/1440 هـ</span></div>
+      <div class="ir"><span class="il">سداد العظم</span><span class="iv">28/10/2020م ✓</span></div>
+      <div class="ir"><span class="il">يشمل العظم</span><span class="iv">الدورين+السور+المجلس+الخزان+البيارة</span></div>
+      <div class="ir"><span class="il">زراعة النخل</span><span class="iv">10/4/1442 هـ</span></div>
+      <div class="ir"><span class="il">بداية التشطيب م.أولى</span><span class="iv">14/2/1442 هـ</span></div>
+      <div class="ir" onclick="editSecondFinishing()" style="cursor:pointer;background:var(--bg3);border-radius:8px;margin-top:4px;transition:all .2s"><span class="il">⭐ بداية التشطيب م.ثانية</span><span class="iv" id="secondFinishingDate" style="color:var(--yellow);font-weight:bold">⏳ لم تبدأ بعد</span><span class="tag ty" style="margin-right:auto">✏️ انقر للتعديل</span></div>
+    </div></div>
+</div>
+
+<!-- ══ سباكة ══ -->
+<div class="pg" id="pg-plumbing"><div id="plumbingSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">التأسيس المدفوع سابقاً</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">شغل يد تأسيس (نصف القاطوعة)</div><div class="er-meta">إجمالي القاطوعة 7,500 ر | النصف الثاني عند نهاية التطبيق</div></div><div class="er-right"><div class="er-amt">3,500 ر</div><span class="tag tg">✓ مدفوع</span></div></div><div class="er"><div class="er-info"><div class="er-name">مواد السباكة - التأسيس (صافي)</div><div class="er-meta">18,508 إجمالي - 2,895 رجيع</div></div><div class="er-right"><div class="er-amt">15,613 ر</div><span class="tag ts2">مواد</span></div></div><div class="er"><div class="er-info"><div class="er-name">مواد خزان مياه + قاعدة</div></div><div class="er-right"><div class="er-amt">1,500 ر</div><span class="tag ts2">مواد</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🟡</span><span class="ct">أجور متبقية للعمال (م.أولى)</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">باقي أجرة السباك (النصف الثاني)</div><div class="er-meta">تُدفع عند الانتهاء من تطبيق السباكة</div></div><div class="er-right"><div class="er-amt">4,000 ر</div><span class="tag tr">⏳ مستحق</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">مواد التطبيق المخططة</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">كراسي (7 × 350)</div></div><div class="er-right"><div class="er-amt">2,450 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">شطافات (7 × 80)</div></div><div class="er-right"><div class="er-amt">560 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">سخانات 50 لتر نايمة (9 × 250)</div></div><div class="er-right"><div class="er-amt">2,250 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">شفاطات مع جرجور (10)</div></div><div class="er-right"><div class="er-amt">3,200 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">صفايات (10 × 75)</div></div><div class="er-right"><div class="er-amt">750 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">سماعة ومسطرة دش (4 × 300)</div></div><div class="er-right"><div class="er-amt">1,200 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">صنبور دش (4 × 400)</div></div><div class="er-right"><div class="er-amt">1,600 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">صنابير مغاسل (12 × 240)</div></div><div class="er-right"><div class="er-amt">2,880 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">مغاسل (12) - يُقاس مع السباك قبل الشراء</div></div><div class="er-right"><div class="er-amt">12,000 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">هراب مغاسل (12 × 90)</div></div><div class="er-right"><div class="er-amt">1,080 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">خزان مياه 4,000 لتر (ترقية من 3000)</div></div><div class="er-right"><div class="er-amt">1,560 ر</div><span class="tag ty">مخطط</span></div></div><hr class="divline"><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:12px;font-weight:700">إجمالي المواد المخططة</span><span style="font-size:14px;font-weight:900;color:var(--sand)">29,530 ر</span></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">➕</span><span class="ct">مشتريات ودفعات فعلية جديدة</span><span class="cv">▲</span></div><div class="cb"><div id="plumbingEntries"></div></div></div>
+</div>
+
+<!-- ══ كهرباء ══ -->
+<div class="pg" id="pg-electric"><div id="electricSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">التأسيس المدفوع سابقاً</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">شغل يد تأسيس (نصف القاطوعة)</div><div class="er-meta">إجمالي القاطوعة 13,000 ر | النصف الثاني عند نهاية التطبيق</div></div><div class="er-right"><div class="er-amt">7,000 ر</div><span class="tag tg">✓ مدفوع</span></div></div><div class="er"><div class="er-info"><div class="er-name">مواد الكهرباء - التأسيس (صافي)</div><div class="er-meta">15,846 إجمالي - 677 رجيع</div></div><div class="er-right"><div class="er-amt">14,728 ر</div><span class="tag ts2">مواد</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🟡</span><span class="ct">أجور متبقية للعمال (م.أولى)</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">باقي أجرة الكهربائي (النصف الثاني)</div><div class="er-meta">تُدفع عند الانتهاء من تطبيق الكهرباء</div></div><div class="er-right"><div class="er-amt">6,000 ر</div><span class="tag tr">⏳ مستحق</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">مواد التطبيق المخططة</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">إنارة داخلية (70 داون + 80 اسبوت + 11 ستريب + 7 ثريا + 7 معلقة + 14 جدارية)</div></div><div class="er-right"><div class="er-amt">15,147 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">مفاتيح وأفياش (295 × 25 ريال)</div></div><div class="er-right"><div class="er-amt">7,375 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">إنارة خارجية (كورنيش سطوح 85 + سور 70 + جداريات)</div></div><div class="er-right"><div class="er-amt">10,470 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">كيابل + 3 طبالين (أرضي + علوي + ديوانية)</div></div><div class="er-right"><div class="er-amt">4,150 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">انتركم + انترفون بشاشة</div></div><div class="er-right"><div class="er-amt">800 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">أمبليفر + 9 سماعات 6 واط</div></div><div class="er-right"><div class="er-amt">2,500 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">8 كاميرات 8MP + DVR 2 تيرا | مؤسسة جنوب الاحتراف - جدة</div></div><div class="er-right"><div class="er-amt">3,650 ر</div><span class="tag ty">مخطط</span></div></div><hr class="divline"><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:12px;font-weight:700">إجمالي المواد المخططة</span><span style="font-size:14px;font-weight:900;color:var(--sand)">44,200 ر</span></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">➕</span><span class="ct">مشتريات ودفعات فعلية جديدة</span><span class="cv">▲</span></div><div class="cb"><div id="electricEntries"></div></div></div>
+</div>
+
+<!-- ══ تبليط ══ -->
+<div class="pg" id="pg-tiles"><div id="tilesSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">اللياسة المدفوعة سابقاً</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">شغل يد لياسة (نصف القاطوعة)</div><div class="er-meta">إجمالي القاطوعة 52,000 ر | النصف الثاني عند نهاية التطبيق</div></div><div class="er-right"><div class="er-amt">26,000 ر</div><span class="tag tg">✓ مدفوع</span></div></div><div class="er"><div class="er-info"><div class="er-name">مواد اللياسة (داخلي + خارجي + عزل)</div></div><div class="er-right"><div class="er-amt">6,500 ر</div><span class="tag ts2">مواد</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🟡</span><span class="ct">أجور متبقية للعمال (م.أولى)</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">باقي أجرة المليّس والمبلّط (النصف الثاني)</div><div class="er-meta">تُدفع عند الانتهاء من التطبيق النهائي</div></div><div class="er-right"><div class="er-amt">26,000 ر</div><span class="tag tr">⏳ مستحق</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">📦</span><span class="ct">البلاط المخطط</span><span class="cv">▲</span></div><div class="cb"><div class="note ny">⭐ الأولوية: إسباني أو إيطالي | تجنب الهندي تماماً (يمتص الماء) | بورسلان: استخدم Fixer 3F (ثقل الزبادي)</div><div class="er"><div class="er-info"><div class="er-name">أرضيات 60×60 + 120×60 (~420م²)</div></div><div class="er-right"><div class="er-amt">33,700 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">جدران حمامات (~200م²)</div></div><div class="er-right"><div class="er-amt">6,000 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">رخام الدرج</div></div><div class="er-right"><div class="er-amt">4,620 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">بلاط الحوش (~400م²)</div></div><div class="er-right"><div class="er-amt">10,800 ر</div><span class="tag ty">مخطط</span></div></div><hr class="divline"><div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:12px;font-weight:700">إجمالي البلاط المخطط</span><span style="font-size:14px;font-weight:900;color:var(--sand)">55,120 ر</span></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">➕</span><span class="ct">مشتريات ودفعات فعلية جديدة</span><span class="cv">▲</span></div><div class="cb"><div id="tilesEntries"></div></div></div>
+</div>
+
+<!-- ══ متفرقات ══ -->
+<div class="pg" id="pg-other"><div id="otherSum"></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">بنود مدفوعة سابقاً</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">أعمال تجهيز وتسوية وتكسير</div></div><div class="er-right"><div class="er-amt">12,950 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">حلوق أبواب حديد (7) + غطاء مصعد</div></div><div class="er-right"><div class="er-amt">5,100 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">حلوق أبواب خشب (17 × 165 ر)</div></div><div class="er-right"><div class="er-amt">2,800 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">تأسيس مكيفات (مواد + يد)</div></div><div class="er-right"><div class="er-amt">7,900 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">تأسيس الغاز (يد 800 + مواد 920)</div></div><div class="er-right"><div class="er-amt">1,720 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">ديكور: مشب + قرميد</div></div><div class="er-right"><div class="er-amt">12,350 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">تصميم الديكور الخارجي والداخلي</div></div><div class="er-right"><div class="er-amt">9,000 ر</div><span class="tag tg">✓</span></div></div><div class="er"><div class="er-info"><div class="er-name">شبك حماية (6 شبابيك)</div></div><div class="er-right"><div class="er-amt">3,000 ر</div><span class="tag tg">✓</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🔧</span><span class="ct">بنود مخططة للمرحلة الثانية</span><span class="cv">▲</span></div><div class="cb"><div class="er"><div class="er-info"><div class="er-name">أعمال الحديد (أبواب + شبك)</div></div><div class="er-right"><div class="er-amt">18,330 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">ألمنيوم (نوافذ + أبواب + زجاج + كلادينج)</div></div><div class="er-right"><div class="er-amt">27,100 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">دربزين الدرج</div></div><div class="er-right"><div class="er-amt">9,530 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">المنجرة (أبواب خشب وPVC)</div></div><div class="er-right"><div class="er-amt">13,820 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">مطابخ (~13م طولي - متوسط)</div></div><div class="er-right"><div class="er-amt">13,500 ر</div><span class="tag ty">مخطط</span></div></div><div class="er"><div class="er-info"><div class="er-name">دهانات داخلية + خارجية (2,770م²)</div></div><div class="er-right"><div class="er-amt">44,000 ر</div><span class="tag ty">مخطط</span></div></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">➕</span><span class="ct">مشتريات ودفعات فعلية جديدة</span><span class="cv">▲</span></div><div class="cb"><div id="otherEntries"></div></div></div>
+</div>
+
+<!-- ══ ملاحظات ══ -->
+<div class="pg" id="pg-notes"><div class="card"><div class="ch" onclick="tog(this)"><span class="ci">✅</span><span class="ct">قائمة مهام قبل البدء</span><span class="cv">▲</span></div><div class="cb"><div id="checkWrap"></div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🎨</span><span class="ct">تصميم الديكور الخارجي</span><span class="cv">▲</span></div><div class="cb"><div class="note nb2">التصميم الأول: أبيض مطفي بلاستيك (سائد) | تطعيمة رصاصي مطفي</div><div class="ir"><span class="il">الأبواب</span><span class="iv">ترافنتينو خشبي يمين ويسار</span></div><div class="ir"><span class="il">جدار الجلسة الخارجية</span><span class="iv">ترافنتينو</span></div><div class="ir"><span class="il">أسفل حزام العمارة</span><span class="iv">رخام رصاصي (مشابه بلاط الحوش)</span></div><div class="ir"><span class="il">السور الخارجي</span><span class="iv">ترافنتينو يمين/يسار + رصاصي بين الأشجار</span></div><div class="ir"><span class="il">الشبابيك</span><span class="iv">ترافنتينو يمين/يسار | رصاصي فوق/تحت</span></div><div class="ir"><span class="il">السور من الداخل</span><span class="iv">رصاصي مطفي</span></div><div class="note ny" style="margin-top:8px">التصميم الثاني: كل العمارة أبيض مطفي + كرانيش رصاصي | السور داخل+خارج رصاصي | الديوانية رصاصي | مدخل الرجال رصاصي | جنبي بيت الدرج رصاصي</div></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">💡</span><span class="ct">توزيع الإنارة غرفة بغرفة</span><span class="cv">▲</span></div><div class="cb"><div class="note nb2">معادلة: طول الجدار ÷ 1.618 = عدد اللمبات | الارتداد 70 سم | فريم: illus | لمبة GU10 | 4500-6000 كالفن</div><div class="note nr">⛔ ممنوع قص فتحات الجبس قبل تحديد نوع ومقاس الفريمات</div><div class="sl2">الدور الأرضي</div><ul class="ul"><li><b>الصالة + مدخل النساء:</b> 7 طول + 3 عرض | 3 اسبوت ثنائي طول + 2 فردي عرض + 2 زوايا | 2 ثريا طولية | ستريب الستارتين + فوق دولاب العبايات</li><li><b>مغسلة النساء:</b> 2 اسبوت فردي + ستريب خلف المرايا</li><li><b>حمام النساء:</b> اسبوت رأس الكرسي + ستريب تجويف + ستريب جدار الكرسي</li><li><b>المقلط:</b> 3 طول + 2 عرض | 2 اسبوت ثنائي طول + 1 فردي عرض | ستريب الستارة</li><li><b>موزع الرجال:</b> 2 لمبة + 1 اسبوت ثنائي | 2 جدارية على باب المجلس + ستريب للوحة</li><li><b>مغسلة الرجال:</b> لمبة سنتر + 2 اسبوت فردي + ستريب المرايا</li><li><b>حمام الرجال:</b> اسبوت كرسي + ستريب تجويف + ستريب جدار</li><li><b>مجلس الرجال:</b> 3 طول + 2 عرض | 2 اسبوت ثنائي طول + 1 ثنائي عرض + 2 فردي زوايا | ستريب الستارة</li><li><b>المطبخ الأرضي:</b> 3 لمبات كبيرة + 2 اسبوت فردي</li><li><b>المستودع:</b> 2 لمبات كبيرة طولية</li><li><b>الدرجان:</b> 3 لمبات جدارية + اسبوت لكل شباك (لكل درج)</li><li><b>الديوانية:</b> 4 طولي + 3 عرض | ثريا + ستريب الستارة | 3 معلقة تراثية طولي + 2 عرض</li><li><b>مغسلة الديوانية:</b> 2 لمبة + 2 اسبوت + ستريب المرايا</li><li><b>حمام الديوانية:</b> لمبة سنتر + 2 اسبوت فوق الكراسي + ستريب جدار</li></ul><div class="sl2">الدور الأول</div><ul class="ul"><li><b>الصالة 2:</b> 3 طول + 2 عرض | 2 اسبوت ثنائي + 1 ثنائي عرض + 1 فردي زاوية | ثريا + ستريب الستارة</li><li><b>ركن القهوة:</b> 1 معلقة يمين + 1 اسبوت سنتر + ستريب</li><li><b>موزع الغسيل:</b> لمبة + 2 اسبوت فردي يمين ويسار</li><li><b>مغسلة الملابس:</b> 2 لمبة كبيرة + 1 اسبوت ثنائي</li><li><b>حمام الأولاد/البنات:</b> 3 اسبوت فردية (مغسلة+كرسي+مروش) + ستريب المغسلة</li><li><b>غرف الأولاد/البنات:</b> 2 معلقة رأس السرير | ستريب رأس كل سرير + ستريب الستارة | 2 اسبوت ثنائي + 2 فردي | ثريا خفيفة | إنارة ماسحة التسريحة</li><li><b>المطبخ العلوي:</b> 3 لمبات كبيرة + 3 اسبوت فردي</li><li><b>غرفة النوم الرئيسية:</b> 2 معلقة رأس السرير | ستريب عرض السرير | 2 اسبوت ثنائي + 2 فردي | ثريا + ستريب الستارة | إنارة ماسحة التسريحة</li><li><b>غرفة الملابس:</b> 3 لمبات طولي + 2 اسبوت فردي</li><li><b>حمام الغرفة الرئيسية:</b> 2 اسبوت فردي مغسلة + ستريب مرايا | 2 اسبوت كرسي ومروش</li><li><b>المصعد:</b> 2 لمبة كبيرة بمفاتيح داخلية</li></ul><div class="sl2">الخارج</div><ul class="ul"><li>كورنيش السطوح: 85 داون لايت | كورنيش السور: 70 داون لايت</li><li>جدار السور الداخلي: 20 جدارية | واجهة العمارة: 12 | الديوانية: 3</li><li>مدخل الرجال: 3 فوانيس (1 معلق + 2 يمين/يسار الباب)</li></ul></div></div>
+  <div class="card"><div class="ch" onclick="tog(this)"><span class="ci">🔌</span><span class="ct">مواصفات الأسلاك والسباكة</span><span class="cv">▲</span></div><div class="cb"><div class="sl2">الأسلاك</div><div class="ir"><span class="il">فرن كهربائي</span><span class="iv">10 ملي</span></div><div class="ir"><span class="il">بخار + غسالات + ميكروويف + شواية + سخانات</span><span class="iv">6 ملي (مباشر من القاطع)</span></div><div class="ir"><span class="il">الأفياش</span><span class="iv">4 ملي</span></div><div class="ir"><span class="il">مفاتيح الإنارة</span><span class="iv">2.5 ملي</span></div><div class="ir"><span class="il">كيبل العداد</span><span class="iv">35 ملي (220V) | 50 ملي (110V)</span></div><div class="ir"><span class="il">مفاتيح سخانات/مكيفات</span><span class="iv">30-45 أمبير (ضغاط)</span></div><div class="note nr" style="margin-top:8px">⚡ سلك التأريض إلزامي | افصل أسلاك الأفياش عن مفاتيح الإنارة | 18-25 لفة فقط للفيلا كاملة</div><div class="sl2">السباكة</div><div class="ir"><span class="il">المطبخ الأرضي</span><span class="iv">السخانة في المستودع بين البابين</span></div><div class="ir"><span class="il">حمام النساء / الرجال</span><span class="iv">السخانة مقابل الباب</span></div><div class="ir"><span class="il">المطبخ العلوي</span><span class="iv">السخانة فوق غسالة الأواني</span></div><div class="ir"><span class="il">حمام الأولاد</span><span class="iv">غرفة الغسيل</span></div><div class="ir"><span class="il">حمام البنات</span><span class="iv">فوق المغسلة</span></div><div class="ir"><span class="il">حمام الغرفة الرئيسية</span><span class="iv">يمين الكرسي الأفرنجي</span></div><div class="ir"><span class="il">خلاط الشطاف</span><span class="iv">40 سم | رأس الشطاف 55 سم | بُعد 70 سم من الكرسي</span></div><div class="ir"><span class="il">خلاط الدش</span><span class="iv">110 سم | بزبوز تحت 30 سم | دش فوق 210 سم</span></div></div></div>
+</div>
+
+<!-- ══ تقرير ══ -->
+<div class="pg" id="pg-report"><div id="reportContent"></div><div class="card"><div class="ch nb"><span class="ci">📤</span><span class="ct">مشاركة وطباعة</span></div><div class="cb" style="display:block"><button class="share-btn" onclick="shareWA()">📲 مشاركة عبر واتساب</button><button class="print-btn" onclick="window.print()">🖨️ طباعة التقرير</button></div></div></div>
+</div><!-- /scroll -->
+
+<nav class="tabs">
+  <button class="tb on"  onclick="sw('home',this)"><span class="tb-ico">🏡</span>الرئيسية</button>
+  <button class="tb"     onclick="sw('plumbing',this)"><span class="tb-ico">🚿</span>سباكة</button>
+  <button class="tb"     onclick="sw('electric',this)"><span class="tb-ico">⚡</span>كهرباء</button>
+  <button class="tb"     onclick="sw('tiles',this)"><span class="tb-ico">🟦</span>تبليط</button>
+  <button class="tb"     onclick="sw('other',this)"><span class="tb-ico">🔧</span>متفرقات</button>
+  <button class="tb"     onclick="sw('notes',this)"><span class="tb-ico">📝</span>ملاحظات</button>
+  <button class="tb"     onclick="sw('report',this)"><span class="tb-ico">📊</span>تقرير</button>
+</nav>
+<button class="add-fab" id="fab" onclick="openAdd()">＋ إضافة قيد</button>
+
+<!-- ADD/EDIT MODAL -->
+<div class="overlay h" id="modal">
+  <div class="sheet">
+    <div class="sh-title" id="modalTitle">إضافة قيد جديد</div>
+    <input type="hidden" id="editId" value="">
+    <div class="lbl">نوع القيد</div>
+    <div class="type-sel"><div class="type-btn on" onclick="setType('material',this)">📦 مواد</div><div class="type-btn" onclick="setType('labor',this)">👷 يد عاملة</div><div class="type-btn" onclick="setType('both',this)">📦+👷 الاثنان</div></div>
+    <input class="inp" id="iDesc" placeholder="وصف البند (مثال: بلاط إيطالي 60×60)">
+    <input class="inp" id="iCont" placeholder="اسم المقاول / المورد (اختياري)">
+    <div class="inp-row"><input class="inp" id="iMat" type="number" min="0" placeholder="تكلفة المواد (ر)"><input class="inp" id="iLab" type="number" min="0" placeholder="أجرة اليد (ر)"></div>
+    <div class="lbl">التبويب</div><select class="inp" id="iCat"><option value="plumbing">🚿 السباكة</option><option value="electric">⚡ الكهرباء</option><option value="tiles">🟦 التبليط واللياسة</option><option value="other">🔧 متفرقات</option></select>
+    <div class="lbl">حالة الدفع</div><select class="inp" id="iStat" onchange="onStatChg()"><option value="paid">✅ مدفوع بالكامل</option><option value="partial">⏳ مدفوع جزئياً</option><option value="pending">🔴 لم يُدفع بعد</option></select>
+    <input class="inp" id="iPaid" type="number" min="0" placeholder="المبلغ المدفوع فعلياً (ر)" style="display:none">
+    <input class="inp" id="iDate" type="date">
+    <div class="ma"><button class="btn-p" onclick="saveE()">💾 حفظ</button><button class="btn-s" onclick="closeAdd()">إلغاء</button></div>
+    <div class="ma" id="deleteBtnContainer" style="margin-top:8px;display:none"><button class="btn-del-red" onclick="deleteCurrent()">🗑 حذف القيد نهائياً</button></div>
+  </div>
+</div>
+
+<!-- Modal لتعديل تاريخ التشطيب الثاني -->
+<div class="overlay h" id="finishingModal">
+  <div class="sheet">
+    <div class="sh-title">✏️ تعديل تاريخ بداية التشطيب الثاني</div>
+    <div class="lbl">تاريخ بداية التشطيب الثاني</div>
+    <input type="date" class="inp" id="finishingDateInput">
+    <div class="ma">
+      <button class="btn-p" onclick="saveFinishingDate()">💾 حفظ التاريخ</button>
+      <button class="btn-s" onclick="closeFinishingModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+const FIXED = { land:200000, skeleton:273000, prep:12950, plumbBase:20113, elecBase:21728, doorsIron:5100, doorsWood:2800, plasterBase:32500, ac:7900, gas:1720, decor:12350, design:9000, safetyNet:3000 };
+const LABOR_REMAIN = { plumbing:4000, electric:6000, tiles:26000 };
+const CHECKS = [
+  {id:'c1',t:'صوّر جميع تمديدات الكهرباء والسباكة قبل الطمر'},{id:'c2',t:'أحضر المبلط لإعطاء السباك والكهربائي المنسوب النهائي للدفنيات'},{id:'c3',t:'تأسيس خرطوش مياه لفاف بجنب الدينمو لغسل البلاط'},{id:'c4',t:'تمديد ماصورة تصريف السطح من تحت البلاط إلى الشارع مباشرة'},{id:'c5',t:'ترقية الخزان العلوي من 3000 إلى 4000 لتر'},{id:'c6',t:'ماصورة ارتداد فائض الماء من الخزان + 3 أفياش الدينمو (عوامات علوية وسفلية)'},{id:'c7',t:'تأسيس الفايبر بماصورة 2 بوصة من السطح إلى جنب العداد'},{id:'c8',t:'تأسيس الطاقة الشمسية بماصورة 2 بوصة إلى جنب عداد الكهرباء'},{id:'c9',t:'تأسيس شبكة إنارة احتياطية (بطارية) في كل غرفة حتى الحوش'},{id:'c10',t:'تأسيس كهرباء للانتركم والانترفون (أبواب الرجال)'},{id:'c11',t:'تأسيس فيش تحت مغاسل اليد للصنبور الكهربائي'},{id:'c12',t:'تأسيس فيش + ماصورة لجهاز تحلية المياه تحت مجلى المطبخ'},{id:'c13',t:'مغسلة الأواني: 85×60×60 سم | فيش ثلاثي + ماصورة 3/4 + تصريف'},{id:'c14',t:'تأسيس فيش الستارة الكهربائية جانب كل شباك في الأعلى'},{id:'c15',t:'تأسيس فيش زاوية لكل غرفة (50سم×50سم ارتفاع) للأبجورة'},{id:'c16',t:'تأسيس كاميرات الأركان الأربعة للسور من الخارج + DVR تحت الدرج'},{id:'c17',t:'جهاز البخار حمام الرئيسية: 4.5-6 كيلو | 6ملي + 45 أمبير + ماصورة 1.5 بوصة'},{id:'c18',t:'تأسيس التلفزيون (75 بوصة): فيش+إنترنت 140سم | رسيفر 50سم | ماصورة 2 بوصة'},{id:'c19',t:'مربع خزان الغاز في الحوش: مرتفع 10سم، 2×1 متر، جنب خزان المياه'},{id:'c20',t:'فصل تسليك الأفياش تماماً عن مفاتيح الإنارة'},{id:'c21',t:'مفتاح دركسون: عند الدرج (دورين) + رأس السرير يمين ويسار'},{id:'c22',t:'عزل سطح بيت الدرج + تصريف المطر (زاوية يمين المقابلة للشارع)'},{id:'c23',t:'باب بيت الدرج يفتح للخارج (سلامة من الحريق)'},{id:'c24',t:'تأسيس فيش دينمو أعلى باب البايكة (الكراج)'},{id:'c25',t:'تغطية بير المصعد مؤقتاً بصاج حديد على حامل (مخزن مؤقت)'}
+];
+let S = JSON.parse(localStorage.getItem('vh4') || '{"entries":[],"checks":{},"secondFinishingDate":""}');
+function save() { localStorage.setItem('vh4', JSON.stringify(S)); }
+const f = n => Math.round(n).toLocaleString('ar-EG');
+let curTab = 'home';
+const CATS = ['plumbing','electric','tiles','other'];
+let currentEditId = null;
+
+// حساب المرحلة الأولى
+function calcPhase1() {
+  return FIXED.prep + FIXED.plumbBase + FIXED.elecBase + FIXED.doorsIron + FIXED.doorsWood + FIXED.plasterBase + FIXED.ac + FIXED.gas + FIXED.decor + FIXED.design + FIXED.safetyNet;
+}
+function entriesOf(cat) { return S.entries.filter(e => e.cat === cat); }
+function sumOf(cat) {
+  const list = entriesOf(cat);
+  let mat=0, lab=0, paid=0, pend=0;
+  list.forEach(e => { mat += e.mat||0; lab += e.lab||0; paid += e.paidAmt||0; pend += (e.total||0) - (e.paidAmt||0); });
+  return {list, mat, lab, total:mat+lab, paid, pend};
+}
+
+// ═══════════════════ UI HELPERS ═══════════════════
+function sw(name, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  btn.classList.add('on');
+  curTab = name;
+  document.getElementById('mainScroll').scrollTop = 0;
+  const fab = document.getElementById('fab');
+  CATS.includes(name) ? fab.classList.add('vis') : fab.classList.remove('vis');
+  if (name === 'report') renderReport();
+  renderAll();
+}
+function tog(h) { const c = h.closest('.card'); c.classList.toggle('col'); const cv = h.querySelector('.cv'); if(cv) cv.style.transform = c.classList.contains('col') ? 'rotate(180deg)' : ''; }
+
+// ═══════════════════ SECOND FINISHING DATE ═══════════════════
+function editSecondFinishing() {
+  document.getElementById('finishingDateInput').value = S.secondFinishingDate || '';
+  document.getElementById('finishingModal').classList.remove('h');
+}
+function closeFinishingModal() {
+  document.getElementById('finishingModal').classList.add('h');
+}
+function saveFinishingDate() {
+  const newDate = document.getElementById('finishingDateInput').value;
+  S.secondFinishingDate = newDate;
+  save();
+  updateSecondFinishingDisplay();
+  closeFinishingModal();
+  renderAll();
+}
+function updateSecondFinishingDisplay() {
+  const dateElement = document.getElementById('secondFinishingDate');
+  if(dateElement) {
+    if(S.secondFinishingDate) {
+      dateElement.innerHTML = `📅 ${S.secondFinishingDate}`;
+      dateElement.style.color = 'var(--green)';
+    } else {
+      dateElement.innerHTML = '⏳ لم تبدأ بعد';
+      dateElement.style.color = 'var(--yellow)';
+    }
+  }
+}
+
+// ═══════════════════ MODAL (ADD/EDIT) ═══════════════════
+let eType = 'material';
+function setType(t, btn) {
+  eType = t;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const matInp = document.getElementById('iMat'), labInp = document.getElementById('iLab');
+  matInp.disabled = t === 'labor'; labInp.disabled = t === 'material';
+  matInp.style.opacity = t === 'labor' ? '.35' : '1';
+  labInp.style.opacity = t === 'material' ? '.35' : '1';
+}
+function openAdd() {
+  currentEditId = null;
+  document.getElementById('modalTitle').innerText = 'إضافة قيد جديد';
+  document.getElementById('deleteBtnContainer').style.display = 'none';
+  if(CATS.includes(curTab)) document.getElementById('iCat').value = curTab;
+  document.getElementById('iDate').value = new Date().toISOString().split('T')[0];
+  ['iDesc','iCont','iMat','iLab','iPaid','editId'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('iStat').value = 'paid';
+  document.getElementById('iPaid').style.display = 'none';
+  setType('material', document.querySelectorAll('.type-btn')[0]);
+  document.getElementById('modal').classList.remove('h');
+}
+function closeAdd() { document.getElementById('modal').classList.add('h'); currentEditId = null; }
+function onStatChg() { document.getElementById('iPaid').style.display = document.getElementById('iStat').value === 'partial' ? 'block' : 'none'; }
+
+// EDIT: فتح التعديل عند النقر على أي بند
+function editEntry(id) {
+  const entry = S.entries.find(e => e.id === id);
+  if(!entry) return;
+  currentEditId = id;
+  document.getElementById('modalTitle').innerText = '✏️ تعديل القيد';
+  document.getElementById('deleteBtnContainer').style.display = 'flex';
+  document.getElementById('editId').value = id;
+  document.getElementById('iDesc').value = entry.desc;
+  document.getElementById('iCont').value = entry.contractor || '';
+  document.getElementById('iMat').value = entry.mat || 0;
+  document.getElementById('iLab').value = entry.lab || 0;
+  document.getElementById('iCat').value = entry.cat;
+  document.getElementById('iStat').value = entry.status;
+  document.getElementById('iPaid').value = entry.paidAmt || 0;
+  document.getElementById('iDate').value = entry.date || '';
+  onStatChg();
+  // تحديد النوع
+  if(entry.type === 'material') setType('material', document.querySelectorAll('.type-btn')[0]);
+  else if(entry.type === 'labor') setType('labor', document.querySelectorAll('.type-btn')[1]);
+  else setType('both', document.querySelectorAll('.type-btn')[2]);
+  document.getElementById('modal').classList.remove('h');
+}
+function deleteCurrent() {
+  if(!currentEditId) return;
+  if(!confirm('⚠️ هل أنت متأكد من حذف هذا القيد نهائياً؟')) return;
+  S.entries = S.entries.filter(e => e.id !== currentEditId);
+  save();
+  closeAdd();
+  renderAll();
+}
+function saveE() {
+  const desc = document.getElementById('iDesc').value.trim();
+  if(!desc) { alert('أدخل وصف البند'); return; }
+  const mat = eType === 'labor' ? 0 : (parseFloat(document.getElementById('iMat').value)||0);
+  const lab = eType === 'material' ? 0 : (parseFloat(document.getElementById('iLab').value)||0);
+  if(mat + lab === 0) { alert('أدخل قيمة'); return; }
+  const stat = document.getElementById('iStat').value;
+  const total = mat + lab;
+  const paidAmt = stat === 'paid' ? total : (stat === 'partial' ? (parseFloat(document.getElementById('iPaid').value)||0) : 0);
+  const newEntry = {
+    id: currentEditId || Date.now(),
+    cat: document.getElementById('iCat').value,
+    type: eType,
+    desc, mat, lab, total,
+    contractor: document.getElementById('iCont').value.trim(),
+    status: stat, paidAmt,
+    date: document.getElementById('iDate').value
+  };
+  if(currentEditId) {
+    const idx = S.entries.findIndex(e => e.id === currentEditId);
+    if(idx !== -1) S.entries[idx] = newEntry;
+  } else {
+    S.entries.push(newEntry);
+  }
+  save();
+  closeAdd();
+  renderAll();
+}
+
+// ═══════════════════ RENDER ENTRIES (مع إمكانية التعديل) ═══════════════════
+function renderEntries(cat) {
+  const el = document.getElementById(cat+'Entries');
+  if(!el) return;
+  const list = entriesOf(cat);
+  if(!list.length) { el.innerHTML = '<div class="empty">لا توجد قيود حالياً<br>اضغط ＋ للإضافة أو اضغط على أي بند للتعديل</div>'; return; }
+  el.innerHTML = list.map(e => `
+    <div class="er" onclick="editEntry(${e.id})">
+      <div class="er-info">
+        <div class="er-name">${e.desc}</div>
+        <div class="er-meta">${e.date}${e.contractor?' | '+e.contractor:''}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">${typeTag(e.type)} ${statTag(e)}</div>
+        ${e.mat&&e.lab?`<div style="font-size:10px;color:var(--text3);margin-top:2px">مواد: ${f(e.mat)} ر | يد: ${f(e.lab)} ر</div>`:''}
+      </div>
+      <div class="er-right">
+        <div class="er-amt">${f(e.total)} ر</div>
+        <button class="er-del" onclick="event.stopPropagation(); if(confirm('حذف هذا القيد؟')) delE(${e.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function typeTag(t) { return t === 'material' ? '<span class="tag ts2">📦 مواد</span>' : t === 'labor' ? '<span class="tag tg">👷 يد عاملة</span>' : '<span class="tag tb2">📦+👷 مواد+يد</span>'; }
+function statTag(e) { if(e.status === 'paid') return '<span class="tag tg">✓ مدفوع</span>'; if(e.status === 'partial') return `<span class="tag ty">جزئي ${f(e.paidAmt)} ر</span>`; return '<span class="tag tr">غير مدفوع</span>'; }
+function delE(id) { S.entries = S.entries.filter(e => e.id !== id); save(); renderAll(); }
+
+// ═══════════════════ SUMMARY & REPORT ═══════════════════
+function renderHomeSummary() {
+  const phase1 = calcPhase1();
+  const allNew = CATS.map(sumOf).reduce((a,c)=>({paid:a.paid+c.paid, pend:a.pend+c.pend}),{paid:0,pend:0});
+  const lr = Object.values(LABOR_REMAIN).reduce((a,b)=>a+b,0);
+  const totalPaid = FIXED.land + FIXED.skeleton + phase1 + allNew.paid;
+  document.getElementById('homeSummary').innerHTML = `<div class="tot"><div class="tl">إجمالي المدفوع على المشروع</div><div class="ta">${f(totalPaid)} ريال</div><div class="ts">أرض + عظم + تشطيب م.أولى + مشتريات جديدة</div></div><div class="sg"><div class="sc"><div class="sv">${f(FIXED.land+FIXED.skeleton)}</div><div class="sl">أرض + عظم</div></div><div class="sc"><div class="sv">${f(phase1)}</div><div class="sl">م.أولى التأسيس</div></div><div class="sc"><div class="sv" style="color:var(--red)">${f(lr+allNew.pend)}</div><div class="sl">إجمالي المتبقي دفعه</div></div><div class="sc"><div class="sv" style="color:var(--green)">${f(allNew.paid)}</div><div class="sl">دفعات جديدة</div></div></div>`;
+}
+function renderCatSummary(cat) {
+  const el = document.getElementById(cat+'Sum'); if(!el) return;
+  const c = sumOf(cat); const lr = LABOR_REMAIN[cat]||0;
+  el.innerHTML = `<div class="sg"><div class="sc"><div class="sv" style="color:var(--green)">${f(c.paid)}</div><div class="sl">مدفوع (جديد)</div></div><div class="sc"><div class="sv" style="color:var(--red)">${f(c.pend+lr)}</div><div class="sl">متبقي الدفع</div></div><div class="sc"><div class="sv">${f(c.mat)}</div><div class="sl">مواد جديدة</div></div><div class="sc"><div class="sv">${f(c.lab)}</div><div class="sl">يد عاملة جديدة</div></div></div>`;
+}
+function renderChecklist() {
+  const done = CHECKS.filter(c=>S.checks[c.id]).length;
+  const pct = Math.round(done/CHECKS.length*100);
+  const wrap = document.getElementById('checkWrap');
+  wrap.innerHTML = `<div class="pw"><div class="pl"><span>المهام المنجزة</span><span>${done}/${CHECKS.length}</span></div><div class="pb"><div class="pf" style="width:${pct}%"></div></div></div>` + CHECKS.map(c => { const d = !!S.checks[c.id]; return `<div class="er" onclick="chk('${c.id}')" style="cursor:pointer;align-items:center"><div style="width:22px;height:22px;border:2px solid ${d?'var(--green)':'var(--border)'};border-radius:6px;background:${d?'var(--green)':'transparent'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">${d?'✓':''}</div><div class="er-info" style="margin-right:8px"><div class="er-name" style="${d?'text-decoration:line-through;color:var(--text3)':''}">${c.t}</div></div></div>`; }).join('');
+  document.getElementById('hdrBadge').textContent = pct + '٪ مهام';
+}
+function chk(id) { S.checks[id]=!S.checks[id]; save(); renderChecklist(); }
+function renderReport() {
+  const phase1 = calcPhase1();
+  const lr = Object.values(LABOR_REMAIN).reduce((a,b)=>a+b,0);
+  const allData = {}; CATS.forEach(c=>allData[c]=sumOf(c));
+  const newPaid = CATS.reduce((a,c)=>a+allData[c].paid,0);
+  const newPend = CATS.reduce((a,c)=>a+allData[c].pend,0);
+  const totalPaid = FIXED.land + FIXED.skeleton + phase1 + newPaid;
+  const totalPend = lr + newPend;
+  const grand = totalPaid + totalPend;
+  const catLabel = {plumbing:'🚿 السباكة',electric:'⚡ الكهرباء',tiles:'🟦 التبليط',other:'🔧 المتفرقات'};
+  const catDetails = CATS.map(cat => { const d = allData[cat]; if(!d.list.length) return ''; const rows = d.list.map(e => `<div class="rpt-row"><div><div class="rn">${e.desc}</div><div style="font-size:10px;color:var(--text3)">${e.date}${e.contractor?' | '+e.contractor:''} | ${e.type==='material'?'مواد':e.type==='labor'?'يد':'مواد+يد'}</div></div><div style="text-align:left"><div class="ra">${f(e.total)} ر</div><div style="font-size:10px;color:${e.status==='paid'?'var(--green)':e.status==='partial'?'var(--yellow)':'var(--red)'}">${e.status==='paid'?'مدفوع':e.status==='partial'?'جزئي '+f(e.paidAmt)+' ر':'غير مدفوع'}</div></div></div>`).join(''); return `<div class="sl2">${catLabel[cat]}</div>${rows}<div class="rpt-row" style="border-top:1px solid var(--sand3)"><span style="font-size:11px;font-weight:700">مجموع ${catLabel[cat]}</span><span class="ra">${f(d.total)} ر</span></div>`; }).join('');
+  document.getElementById('reportContent').innerHTML = `<div class="tot"><div class="tl">الإجمالي الكلي للمشروع (مدفوع + متبقي)</div><div class="ta">${f(grand)} ريال</div><div class="ts">بناءً على كل البيانات المُدخلة</div></div><div class="card"><div class="ch nb"><span class="ci">📋</span><span class="ct">ملخص المشروع</span></div><div class="cb" style="display:block"><div class="rpt-row"><span class="rn">قيمة الأرض</span><span class="ra">${f(FIXED.land)} ر</span></div><div class="rpt-row"><span class="rn">بناء العظم (مدفوع كامل)</span><span class="ra">${f(FIXED.skeleton)} ر</span></div><div class="rpt-row"><span class="rn">أعمال التأسيس م.أولى</span><span class="ra">${f(phase1)} ر</span></div><div class="rpt-row"><span class="rn">دفعات جديدة مُضافة</span><span class="ra">${f(newPaid)} ر</span></div><div class="rpt-row" style="border-top:2px solid var(--green);margin-top:4px"><span class="rn" style="font-weight:700;color:var(--green)">✅ إجمالي المدفوع</span><span class="ra" style="color:var(--green)">${f(totalPaid)} ر</span></div><div class="rpt-row"><span class="rn">أجور عمال م.أولى (نصف ثاني متبقي)</span><span class="ra" style="color:var(--red)">${f(lr)} ر</span></div><div class="rpt-row"><span class="rn">دفعات مستحقة غير مدفوعة</span><span class="ra" style="color:var(--red)">${f(newPend)} ر</span></div><div class="rpt-row" style="border-top:2px solid var(--red);margin-top:4px"><span class="rn" style="font-weight:700;color:var(--red)">🔴 إجمالي المتبقي دفعه</span><span class="ra" style="color:var(--red)">${f(totalPend)} ر</span></div></div></div>${catDetails ? `<div class="card"><div class="ch nb"><span class="ci">📂</span><span class="ct">تفاصيل القيود المُضافة</span></div><div class="cb" style="display:block">${catDetails}</div></div>` : ''}<div class="card"><div class="ch nb"><span class="ci">📊</span><span class="ct">التقدير الإجمالي للمشروع</span></div><div class="cb" style="display:block"><div class="rpt-row"><span class="rn">الأرض + العظم</span><span class="ra">${f(FIXED.land+FIXED.skeleton)} ر</span></div><div class="rpt-row"><span class="rn">م.أولى التأسيس</span><span class="ra">${f(phase1)} ر</span></div><div class="rpt-row"><span class="rn">م.ثانية التطبيق (تقدير)</span><span class="ra">~257,780 ر</span></div><div class="rpt-row" style="border-top:2px solid var(--sand3);margin-top:4px"><span class="rn" style="font-weight:700">الإجمالي التقديري النهائي</span><span class="ra">${f(FIXED.land+FIXED.skeleton+phase1+257780)} ر</span></div><div class="rpt-row"><span class="rn">التكلفة لكل م² (560 م²)</span><span class="ra">${f(Math.round((FIXED.land+FIXED.skeleton+phase1+257780)/560))} ر/م²</span></div></div></div>`;
+}
+function shareWA() {
+  const phase1 = calcPhase1();
+  const lr = Object.values(LABOR_REMAIN).reduce((a,b)=>a+b,0);
+  const allNew = CATS.map(sumOf).reduce((a,c)=>({paid:a.paid+c.paid,pend:a.pend+c.pend}),{paid:0,pend:0});
+  const tp = FIXED.land+FIXED.skeleton+phase1+allNew.paid;
+  let msg = `🏡 *تقرير فيلا الحميد*\n📍 العزيزية - بلقرن\n📅 ${new Date().toLocaleDateString('ar-SA')}\n\n✅ *المدفوع:*\n• الأرض: ${f(FIXED.land)} ر\n• العظم: ${f(FIXED.skeleton)} ر\n• التأسيس م.أولى: ${f(phase1)} ر\n• جديد مدفوع: ${f(allNew.paid)} ر\n💰 *الإجمالي المدفوع: ${f(tp)} ريال*\n\n🔴 *المتبقي:*\n• أجور عمال (نصف ثاني): ${f(lr)} ر\n• دفعات مستحقة: ${f(allNew.pend)} ر\n🔴 *الإجمالي المتبقي: ${f(lr+allNew.pend)} ريال*`;
+  if(S.secondFinishingDate) msg += `\n📅 *بداية التشطيب الثاني:* ${S.secondFinishingDate}`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+function renderAll() { 
+  renderHomeSummary(); 
+  CATS.forEach(cat => { renderCatSummary(cat); renderEntries(cat); }); 
+  renderChecklist();
+  updateSecondFinishingDisplay();
+}
+renderAll();
+</script>
+</body>
+</html>
