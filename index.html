@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>فيلا الحميد - التقرير الشامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#c8a96e;--sand2:#e8d5b0;--sand3:#9a7a45;--bg:#0f0e0c;--bg2:#181612;--bg3:#22201a;--bg4:#2c2920;--text:#f0e8d8;--text2:#b8a888;--text3:#6a6050;--green:#5a9e6f;--gbg:#182218;--red:#c06060;--rbg:#221818;--yellow:#c8a030;--ybg:#221e10;--blue:#5080a0;--bbg:#101820;--purple:#8b5cf6;--pbg:#2d1b4d;--border:#353025;--r:14px;--tab:60px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text)}
+body{max-width:430px;margin:0 auto;display:flex;flex-direction:column}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:15px;flex-shrink:0}
+.hdr-title{font-size:18px;font-weight:900;color:var(--sand)}
+.scroll{flex:1;overflow-y:auto;padding:15px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.tabs{display:flex;background:var(--bg2);border-top:1px solid var(--border);height:var(--tab);flex-shrink:0}
+.tb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;color:var(--text3);font-size:10px;font-family:inherit;cursor:pointer}
+.tb.on{color:var(--sand);border-top:2px solid var(--sand)}
+.pg{display:none}.pg.on{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.ch{padding:12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer}
+.ct{font-size:14px;font-weight:700;flex:1}
+.cb{padding:12px}
+.ir{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.ir:last-child{border-bottom:none}
+.il{font-size:12px;color:var(--text3)}
+.iv{font-size:12px;font-weight:700}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{background:var(--bg3);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)}
+.sv{font-size:16px;font-weight:900;color:var(--sand)}
+.sl{font-size:10px;color:var(--text3)}
+.tot{background:linear-gradient(135deg,var(--sand3),var(--sand));border-radius:var(--r);padding:20px;text-align:center;margin-bottom:15px;color:var(--bg)}
+.ta{font-size:24px;font-weight:900}
+.er{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.tag{font-size:9px;padding:2px 6px;border-radius:5px;font-weight:700}
+.tg{background:var(--gbg);color:var(--green)}
+.tr{background:var(--rbg);color:var(--red)}
+.ty{background:var(--ybg);color:var(--yellow)}
+.tp{background:var(--pbg);color:var(--purple)}
+.btn-p{width:100%;background:var(--sand);color:var(--bg);border:none;padding:12px;border-radius:10px;font-weight:700;margin-top:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-add-inline{background:var(--bbg);color:var(--blue);border:1px dashed var(--blue);font-size:12px;margin-bottom:10px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:99;display:flex;align-items:flex-end;justify-content:center}
+.h{display:none}.sheet{background:var(--bg2);width:100%;max-width:430px;padding:20px;border-radius:20px 20px 0 0}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);padding:10px;color:#fff;border-radius:8px;margin-bottom:10px;font-family:inherit}
+.lbl-s{font-size:11px;color:var(--text3);margin-bottom:5px;display:block}
+@media print{.tabs,.hdr,.btn-p,.overlay,.btn-add-inline{display:none!important}body{background:#fff;color:#000}.card{border:1px solid #000}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+    <div class="hdr-title">🏡 فيلا الحميد</div>
+    <div style="font-size:10px;color:var(--text3)">نظام إدارة التشطيب والأهداف الذكي</div>
+</div>
+
+<div class="scroll" id="mainScroll">
+    <div class="pg on" id="pg-home">
+        <div class="tot">
+            <div style="font-size:12px">إجمالي القيمة المصروفة فعلياً</div>
+            <div class="ta" id="grandTotal">0</div>
+            <div style="font-size:14px">ريال سعودي</div>
+        </div>
+        <div class="card"><div class="ch"><span class="ct">📐 بيانات المساحة</span></div><div class="cb" id="projectData"></div></div>
+        
+        <div class="card">
+            <div class="ch"><span class="ct">📅 جدول الأهداف والتواريخ</span></div>
+            <div class="cb">
+                <button class="btn-p btn-add-inline" onclick="prepareNewTarget()">➕ إضافة هدف جديد (بجدول تاريخ)</button>
+                <div id="datesData"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pg" id="pg-electric"><div id="electricSum"></div><button class="btn-p btn-add-inline" onclick="prepareNewItem('electric')">➕ إضافة بند كهرباء</button><div class="card"><div class="cb" id="electricList"></div></div></div>
+    <div class="pg" id="pg-plumbing"><div id="plumbingSum"></div><button class="btn-p btn-add-inline" onclick="prepareNewItem('plumbing')">➕ إضافة بند سباكة</button><div class="card"><div class="cb" id="plumbingList"></div></div></div>
+    <div class="pg" id="pg-tiles"><div id="tilesSum"></div><button class="btn-p btn-add-inline" onclick="prepareNewItem('tiles')">➕ إضافة بند بلاط/لياسة</button><div class="card"><div class="cb" id="tilesList"></div></div></div>
+    <div class="pg" id="pg-decor"><div id="decorSum"></div><button class="btn-p btn-add-inline" onclick="prepareNewItem('decor')">➕ إضافة بند ديكور</button><div class="card"><div class="cb" id="decorList"></div></div></div>
+    <div class="pg" id="pg-other"><div id="otherSum"></div><button class="btn-p btn-add-inline" onclick="prepareNewItem('other')">➕ إضافة بند متفرقات</button><div class="card"><div class="cb" id="otherList"></div></div></div>
+
+    <div class="pg" id="pg-report">
+        <h3 style="margin-bottom:15px; color:var(--sand)">📊 ملخص الميزانية</h3>
+        <div id="reportDetail"></div>
+        <button class="btn-p" style="background:var(--blue);color:#fff" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn-p" style="background:var(--green);color:#fff" onclick="exportJSON()">📤 نسخة احتياطية</button>
+    </div>
+</div>
+
+<nav class="tabs">
+    <button class="tb on" onclick="sw('home',this)">🏡 الرئيسية</button>
+    <button class="tb" onclick="sw('electric',this)">⚡ كهرباء</button>
+    <button class="tb" onclick="sw('plumbing',this)">🚿 سباكة</button>
+    <button class="tb" onclick="sw('tiles',this)">🟦 تبليط</button>
+    <button class="tb" onclick="sw('decor',this)">🎨 ديكور</button>
+    <button class="tb" onclick="sw('other',this)">🔧 متفرقات</button>
+    <button class="tb" onclick="sw('report',this)">📊 تقرير</button>
+</nav>
+
+<div class="overlay h" id="editModal">
+    <div class="sheet">
+        <h3 id="editTitle" style="margin-bottom:15px; color:var(--sand)">إدارة البيانات</h3>
+        
+        <div id="typeSelectorWrap">
+            <span class="lbl-s">نوع البند:</span>
+            <select class="inp" id="editTypeTag">
+                <option value="mat">📦 مواد</option>
+                <option value="lab">👷 أجرة يد</option>
+                <option value="lump">📑 قاطوعة</option>
+            </select>
+        </div>
+        
+        <span id="lbl1" class="lbl-s">الوصف:</span>
+        <input class="inp" id="editName">
+        
+        <div id="amtSection">
+            <span id="lblAmt" class="lbl-s">المبلغ:</span>
+            <input class="inp" id="editAmt" type="number">
+            
+            <div id="dateInputWrap" class="h">
+                <span class="lbl-s">اختر التاريخ من الجدول:</span>
+                <input class="inp" id="editDateVal" type="date" style="color-scheme: dark;">
+            </div>
+
+            <div id="statusWrap">
+                <span class="lbl-s">حالة الدفع:</span>
+                <select class="inp" id="editStat" onchange="checkStat(this.value)">
+                    <option value="paid">✅ مدفوع</option>
+                    <option value="partial">⏳ جزئي</option>
+                    <option value="pending">🔴 مطلوب</option>
+                    <option value="planned">📋 مخطط</option>
+                </select>
+                <div id="partialInputWrap" class="h">
+                    <input class="inp" id="editPaidAmt" type="number" placeholder="المبلغ المدفوع">
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px; margin-top:10px">
+            <button class="btn-p" onclick="saveEdit()">💾 حفظ</button>
+            <button class="btn-p" style="background:var(--bg4);color:var(--text)" onclick="closeM()">إلغاء</button>
+        </div>
+        <button id="deleteBtn" class="btn-p" style="background:none; color:var(--red); font-size:11px" onclick="deleteGlobal()">🗑️ حذف</button>
+    </div>
+</div>
+
+<script>
+// البيانات محفوظة في المتصفح تحت نسخة جديدة لدعم التاريخ المطور
+const INITIAL_DATA = {
+    projectInfo: [{k:"المساحة", v:"560 م²"}, {k:"الأرض", v:"733 م²"}],
+    dates: [
+        {name: "بدء بناء العظم", val: "2019-01-01"},
+        {name: "سداد العظم", val: "2020-10-28"}
+    ],
+    fixedCosts: { "شراء الأرض": 200000, "بناء العظم": 273000 },
+    sections: { electric: [], plumbing: [], tiles: [], decor: [], other: [] }
+};
+
+let DB = JSON.parse(localStorage.getItem('villa_db_v15')) || INITIAL_DATA;
+let activeEdit = null;
+
+function saveDB() { localStorage.setItem('villa_db_v15', JSON.stringify(DB)); renderAll(); }
+
+function sw(pgId, btn) {
+    document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+    document.getElementById('pg-'+pgId).classList.add('on');
+    btn.classList.add('on');
+}
+
+function renderAll() {
+    document.getElementById('projectData').innerHTML = DB.projectInfo.map((it, idx) => 
+        `<div class="ir" onclick="openEditGlobal('info', ${idx})"><span class="il">${it.k}</span><span class="iv">${it.v}</span></div>`).join('');
+    
+    document.getElementById('datesData').innerHTML = DB.dates.map((it, idx) => 
+        `<div class="ir" onclick="openEditGlobal('date', ${idx})"><span class="il">${it.name}</span><span class="iv">${it.val}</span></div>`).join('');
+
+    let totalFinishPaid = 0;
+    Object.keys(DB.sections).forEach(sId => {
+        const list = DB.sections[sId];
+        document.getElementById(sId+'List').innerHTML = list.map((it, idx) => 
+            `<div class="er" onclick="openEditItem('${sId}', ${idx})"><div style="flex:1"><b>${it.name}</b></div><div style="text-align:left"><b>${it.amt.toLocaleString()} ر</b></div></div>`).join('');
+        totalFinishPaid += list.reduce((a,b) => a + (b.paid || 0), 0);
+    });
+
+    const grandTotal = DB.fixedCosts["شراء الأرض"] + DB.fixedCosts["بناء العظم"] + totalFinishPaid;
+    document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+    renderReport(grandTotal, totalFinishPaid);
+}
+
+function renderReport(grand, finish) {
+    document.getElementById('reportDetail').innerHTML = `<div class="card cb" style="background:var(--bg3)">
+        <div class="ir"><span class="il">الأرض والعظم</span><span class="iv">${(DB.fixedCosts["شراء الأرض"]+DB.fixedCosts["بناء العظم"]).toLocaleString()} ر</span></div>
+        <div class="ir"><span class="il">التشطيب المدفوع</span><span class="iv">${finish.toLocaleString()} ر</span></div>
+        <div class="ir" style="border:none; color:var(--sand)"><span class="il">الإجمالي</span><span class="iv">${grand.toLocaleString()} ر</span></div>
+    </div>`;
+}
+
+// تخصيص "الرئيسية" لإضافة هدف بجدول تاريخ
+function prepareNewTarget() {
+    activeEdit = { type: 'newDate' };
+    document.getElementById('editTitle').innerText = "إضافة هدف جديد";
+    document.getElementById('lbl1').innerText = "اسم الهدف:";
+    document.getElementById('editName').value = "";
+    document.getElementById('editName').placeholder = "مثلاً: تركيب المصعد";
+    
+    document.getElementById('dateInputWrap').classList.remove('h');
+    document.getElementById('editAmt').classList.add('h');
+    document.getElementById('lblAmt').classList.add('h');
+    document.getElementById('statusWrap').classList.add('h');
+    document.getElementById('typeSelectorWrap').style.display = 'none';
+    document.getElementById('deleteBtn').style.display = 'none';
+    document.getElementById('editModal').classList.remove('h');
+}
+
+function openEditGlobal(type, idx) {
+    activeEdit = { type, idx };
+    const it = (type==='info') ? DB.projectInfo[idx] : DB.dates[idx];
+    document.getElementById('editTitle').innerText = "تعديل البيانات";
+    document.getElementById('lbl1').innerText = (type==='info')?"المسمى:":"اسم الهدف:";
+    document.getElementById('editName').value = (type==='info')? it.k : it.name;
+    
+    if(type==='date'){
+        document.getElementById('dateInputWrap').classList.remove('h');
+        document.getElementById('editDateVal').value = it.val;
+        document.getElementById('editAmt').classList.add('h');
+        document.getElementById('lblAmt').classList.add('h');
+    } else {
+        document.getElementById('dateInputWrap').classList.add('h');
+        document.getElementById('editAmt').classList.remove('h');
+        document.getElementById('editAmt').type = "text";
+        document.getElementById('editAmt').value = it.v;
+        document.getElementById('lblAmt').innerText = "القيمة:";
+    }
+    document.getElementById('statusWrap').classList.add('h');
+    document.getElementById('typeSelectorWrap').style.display = 'none';
+    document.getElementById('deleteBtn').style.display = 'block';
+    document.getElementById('editModal').classList.remove('h');
+}
+
+function openEditItem(sec, idx) {
+    activeEdit = { type: 'editItem', sec, idx };
+    const i = DB.sections[sec][idx];
+    document.getElementById('editTitle').innerText = "تعديل مصروف";
+    document.getElementById('editName').value = i.name;
+    document.getElementById('editAmt').classList.remove('h');
+    document.getElementById('lblAmt').classList.remove('h');
+    document.getElementById('editAmt').type = "number";
+    document.getElementById('editAmt').value = i.amt;
+    document.getElementById('dateInputWrap').classList.add('h');
+    document.getElementById('statusWrap').classList.remove('h');
+    document.getElementById('typeSelectorWrap').style.display = 'block';
+    document.getElementById('deleteBtn').style.display = 'block';
+    document.getElementById('editModal').classList.remove('h');
+    checkStat(i.stat);
+}
+
+function prepareNewItem(sec) {
+    activeEdit = { type: 'newItem', sec };
+    document.getElementById('editTitle').innerText = "بند مصروفات جديد";
+    document.getElementById('editName').value = "";
+    document.getElementById('editAmt').classList.remove('h');
+    document.getElementById('editAmt').type = "number";
+    document.getElementById('dateInputWrap').classList.add('h');
+    document.getElementById('statusWrap').classList.remove('h');
+    document.getElementById('typeSelectorWrap').style.display = 'block';
+    document.getElementById('deleteBtn').style.display = 'none';
+    document.getElementById('editModal').classList.remove('h');
+}
+
+function saveEdit() {
+    const n = document.getElementById('editName').value;
+    if(activeEdit.type === 'newDate' || activeEdit.type === 'date') {
+        const d = document.getElementById('editDateVal').value || "لم يحدد";
+        if(activeEdit.type==='newDate') DB.dates.push({name:n, val:d});
+        else DB.dates[activeEdit.idx] = {name:n, val:d};
+    } else if(activeEdit.type === 'info') {
+        DB.projectInfo[activeEdit.idx] = {k:n, v:document.getElementById('editAmt').value};
+    } else {
+        const amt = parseFloat(document.getElementById('editAmt').value)||0;
+        const stat = document.getElementById('editStat').value;
+        const paid = (stat==='paid')?amt:(stat==='partial'?(parseFloat(document.getElementById('editPaidAmt').value)||0):0);
+        const item = {name:n, amt, paid, stat, type:document.getElementById('editTypeTag').value};
+        if(activeEdit.type==='newItem') DB.sections[activeEdit.sec].push(item);
+        else DB.sections[activeEdit.sec][activeEdit.idx] = item;
+    }
+    saveDB(); closeM();
+}
+
+function deleteGlobal() {
+    if(!confirm("حذف؟")) return;
+    if(activeEdit.type==='date') DB.dates.splice(activeEdit.idx,1);
+    else if(activeEdit.type==='info') DB.projectInfo.splice(activeEdit.idx,1);
+    else if(activeEdit.type==='editItem') DB.sections[activeEdit.sec].splice(activeEdit.idx,1);
+    saveDB(); closeM();
+}
+
+function checkStat(v) { document.getElementById('partialInputWrap').classList.toggle('h', v!=='partial'); }
+function closeM() { document.getElementById('editModal').classList.add('h'); }
+function exportJSON() {
+    const blob = new Blob([JSON.stringify(DB)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=`villa_report.json`; a.click();
+}
+renderAll();
+</script>
+</body>
+</html>
